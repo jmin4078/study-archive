@@ -11,12 +11,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- [1. SEO 메타데이터 실습] -->
-    <title>Je의 포트폴리오 웹사이트</title>
-    <meta name="description" content="HTML과 CSS로 정교하게 설계한 Je의 신입 프론트엔드 포트폴리오입니다.">
+    <title>제민기(Je Min-gi)의 포트폴리오</title>
+    <meta name="description" content="백엔드 개발자를 꿈꾸는 제민기의 포트폴리오입니다.">
 
     <!-- [2. 오픈그래프 미리보기 실습] -->
-    <meta property="og:title" content="Je의 포트폴리오">
-    <meta property="og:description" content="HTML과 CSS만으로 가꾼 정적 웹사이트 배포 페이지입니다.">
+    <meta property="og:title" content="제민기의 포트폴리오">
+    <meta property="og:description" content="백엔드를 배우고 있는 제민기의 웹사이트입니다.">
     <!-- 
         [og:image 실습 가이드]
         - 링크 공유 시 나타날 카드 뉴스의 대표 이미지 주소(웹 절대경로)입니다.
@@ -58,42 +58,170 @@
         }
 
         body {
-            /* [내용] 본문은 가독성이 우수한 프리텐다드 기본 지정 */
             font-family: 'Pretendard', sans-serif;
+            background-color: #f8fafc;
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #334155;
+            box-sizing: border-box;
+        }
+
+        .portfolio-card {
+            background-color: #ffffff;
+            max-width: 500px;
+            width: 100%;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+            padding: 48px 40px;
             text-align: center;
-            line-height: 1.7;
-            color: #374151;
+            transition: transform 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-sizing: border-box;
         }
 
-        h1,
-        h2 {
-            /* [제목] 제목 영역은 현대적인 분위기의 페이퍼로지 서체 대입 */
+        .portfolio-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+        }
+
+        .profile-img {
+            width: 160px;
+            height: 160px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 4px solid #eff6ff;
+            margin-bottom: 24px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            background-color: #f1f5f9;
+        }
+
+        h1 {
             font-family: 'Paperlogy', sans-serif;
-            color: #1d4ed8;
+            color: #0f172a;
+            margin-top: 0;
+            margin-bottom: 12px;
+            font-size: 28px;
+            letter-spacing: -0.5px; 
         }
 
-        strong,
-        .highlight {
-            /* [강조] 굵고 개성 넘치는 어그로체를 활용해 가독성 극대화 */
+        .intro-text { 
+            line-height: 1.6;
+            font-size: 16px;
+            margin-bottom: 32px;
+            color: #64748b;
+        }
+
+        strong, .highlight {
             font-family: 'SBAggroB', sans-serif;
-            color: #dc2626;
+            color: #3b82f6;
+            font-weight: normal;
+        }
+
+        .info-section {
+            background-color: #f8fafc;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 32px;
+            text-align: left;
+            border: 1px solid #e2e8f0;
+        }
+
+        .info-section h2 {
+            font-family: 'Paperlogy', sans-serif;
+            color: #1e293b;
+            font-size: 18px;
+            margin-top: 0;
+            margin-bottom: 16px;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 10px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            font-size: 15px;
+        }
+
+        .info-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: #64748b;
+            width: 70px;
+            flex-shrink: 0;
+        }
+
+        .info-value {
+            color: #334155;
+            font-weight: 500;
+        }
+
+        .contact-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #2563eb, #4f46e5);
+            color: white;
+            text-decoration: none;
+            padding: 14px 32px;
+            border-radius: 999px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 16px rgba(37, 99, 235, 0.25);
+            font-family: 'Pretendard', sans-serif;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .contact-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 20px rgba(37, 99, 235, 0.35);
         }
     </style>
 </head>
 
 <body>
-    <h1>Hello, I'm Je! (페이퍼로지 제목)</h1>
-    <p>이 웹사이트는 검색 엔진 최적화(SEO), 오픈그래프 미리보기, 파비콘, 그리고 <strong>3종의 다변화된 웹폰트</strong>가 일괄 적용된 상태입니다.</p>
+    <div class="portfolio-card">
+        <img src="https://picsum.photos/400/400" alt="제민기의 프로필 이미지" class="profile-img" title="포트폴리오 프로필">
+        
+        <h1>안녕하세요! 제민기입니다.</h1>
+        <p class="intro-text">
+            저는 현재 <strong>백엔드를 집중적으로 배우는 중</strong>이며,<br>
+            안정적이고 확장 가능한 서버 아키텍처 구축에 관심이 많습니다.
+        </p>
 
-    <!-- [이미지 구도 실습] HTML 고유 속성(width, height)과 body의 text-align을 활용한 이미지 중앙 정렬 및 간격 배치 -->
-    <br>
-    <img src="https://picsum.photos/400/200" width="400" height="200" alt="Je의 포트폴리오 대표 이미지"
-        title="랜덤하게 생성된 포트폴리오 메인 배너">
-    <br><br>
+        <div class="info-section">
+            <h2>프로필 정보</h2>
+            <div class="info-item">
+                <span class="info-label">이름</span>
+                <span class="info-value">제민기</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">상태</span>
+                <span class="info-value highlight">백엔드 학습 중 (구직 준비)</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">이메일</span>
+                <span class="info-value">jmkk9345@naver.com</span>
+            </div>
+        </div>
 
-    <h2>GitHub Pages 배포 가이드 (페이퍼로지 부제목)</h2>
-    <p>이 파일의 이름을 <span class="highlight">index.html로 변경</span>하여 GitHub Public 저장소에 업로드하고 설정하면 전 세계 누구나 볼 수 있게 배포됩니다.
-    </p>
+        <a href="mailto:jmkk9345@naver.com" class="contact-btn">이메일 보내기</a>
+    </div>
 </body>
 
 </html>
