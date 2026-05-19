@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <title>오히루(お昼) - 프리미엄 정통 일식</title>
+  <!-- 우아한 느낌을 위한 명조체 폰트 적용 -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Noto Serif KR', serif; }
+    .fade-in { animation: fadeIn 1.5s ease-out; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    /* 토스트 알림 애니메이션 */
+    @keyframes slideUp {
+      from { transform: translateY(100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    .toast { animation: slideUp 0.3s ease forwards; }
+    /* 부드러운 스크롤 */
+    html { scroll-behavior: smooth; }
+  </style>
+</head>
+<body class="bg-stone-50 text-stone-800 antialiased overflow-x-hidden">
+
+  <!-- 토스트 알림 컨테이너 (화면 중앙 하단) -->
+  <div id="toast-container" class="fixed bottom-10 left-1/2 transform -translate-x-1/2 z-50 flex flex-col gap-2 pointer-events-none w-max"></div>
+
+  <!-- 헤더 / 내비게이션 바 -->
+  <header class="fixed w-full top-0 z-50 bg-white/90 backdrop-blur-md border-b border-stone-200 transition-all duration-300" id="header">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-20">
+        <!-- 로고 -->
+        <a href="#" class="text-2xl sm:text-3xl font-bold tracking-widest text-stone-900" onclick="window.scrollTo(0,0); return false;">
+          오히루 <span class="text-red-700 text-lg sm:text-xl ml-1">お昼</span>
+        </a>
+        
+        <!-- 데스크탑 메뉴 -->
+        <nav class="hidden md:flex space-x-10 text-sm font-medium tracking-wide">
+          <a href="#about" class="text-stone-600 hover:text-stone-900 transition-colors">소개</a>
+          <a href="#menu" class="text-stone-600 hover:text-stone-900 transition-colors">메뉴</a>
+          <a href="#atmosphere" class="text-stone-600 hover:text-stone-900 transition-colors">공간</a>
+          <a href="#contact" class="text-stone-600 hover:text-stone-900 transition-colors">예약 및 오시는 길</a>
+        </nav>
+
+        <!-- 예약 버튼 (데스크탑) -->
+        <div class="hidden md:block">
+          <button onclick="window.location.href='reservation.html'" class="bg-stone-900 text-white px-6 py-2.5 rounded-sm hover:bg-stone-800 transition-colors text-sm font-medium tracking-wide">
+            예약하기
+          </button>
+        </div>
+
+        <!-- 모바일 메뉴 햄버거 버튼 -->
+        <button id="mobile-menu-btn" class="md:hidden text-stone-800 focus:outline-none">
+          <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- 모바일 메뉴 드롭다운 -->
+    <div id="mobile-menu" class="hidden border-t border-stone-200 bg-white md:hidden absolute w-full shadow-lg z-40">
+      <ul class="flex flex-col text-sm font-medium text-stone-800 text-center py-4">
+        <li><a href="#about" class="block py-4 hover:bg-stone-50" onclick="toggleMenu()">소개</a></li>
+        <li><a href="#menu" class="block py-4 border-t border-stone-100 hover:bg-stone-50" onclick="toggleMenu()">메뉴</a></li>
+        <li><a href="#atmosphere" class="block py-4 border-t border-stone-100 hover:bg-stone-50" onclick="toggleMenu()">공간</a></li>
+        <li><a href="#contact" class="block py-4 border-t border-stone-100 hover:bg-stone-50" onclick="toggleMenu()">예약 및 오시는 길</a></li>
+        <li class="pt-4 border-t border-stone-100 px-6 pb-2">
+          <button onclick="window.location.href='reservation.html'" class="w-full bg-stone-900 text-white px-6 py-3 rounded-sm">예약하기</button>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- 메인 히어로 섹션 -->
+  <section class="relative h-screen flex items-center justify-center overflow-hidden">
+    <!-- 배경 이미지 및 어두운 오버레이 -->
+    <div class="absolute inset-0 z-0">
+      <img src="https://images.unsplash.com/photo-1553621042-f6e147245754?q=80&w=1920&auto=format&fit=crop" alt="일식 셰프" class="w-full h-full object-cover">
+      <div class="absolute inset-0 bg-stone-900/60"></div>
+    </div>
+    
+    <!-- 메인 타이틀 콘텐츠 -->
+    <div class="relative z-10 text-center px-4 fade-in pt-20">
+      <h2 class="text-sm md:text-base text-stone-300 tracking-[0.3em] mb-4">정통 일식 오마카세</h2>
+      <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
+        장인의 손끝에서 피어나는<br>완벽한 미식의 순간
+      </h1>
+      <p class="text-stone-300 text-lg md:text-xl font-light mb-10 max-w-2xl mx-auto">
+        최상의 제철 식재료와 수십 년 경력 장인의 솜씨가 만나<br class="hidden md:block"> 
+        잊을 수 없는 특별한 경험을 선사합니다.
+      </p>
+      <button onclick="window.location.href='reservation.html'" class="bg-transparent border border-white text-white hover:bg-white hover:text-stone-900 transition-colors duration-300 px-8 py-3.5 rounded-sm text-sm font-medium tracking-widest">
+        예약 문의
+      </button>
+    </div>
+  </section>
+
+  <!-- 레스토랑 소개 섹션 (About) -->
+  <section id="about" class="py-24 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row items-center gap-16">
+        <!-- 이미지 영역 -->
+        <div class="md:w-1/2 relative group">
+          <div class="absolute inset-0 bg-stone-200 translate-x-4 translate-y-4 rounded-sm"></div>
+          <img src="https://images.unsplash.com/photo-1615361200141-f45040f367be?q=80&w=800&auto=format&fit=crop" alt="정갈한 일식 요리" class="relative z-10 w-full h-auto object-cover grayscale-[30%] hover:grayscale-0 transition-all duration-700 shadow-lg rounded-sm cursor-pointer" onclick="showToast('매일 아침 공수하는 신선한 제철 식재료입니다.')">
+        </div>
+        <!-- 텍스트 영역 -->
+        <div class="md:w-1/2 text-center md:text-left">
+          <span class="text-red-700 font-semibold tracking-widest text-sm block mb-4">OUR PHILOSOPHY</span>
+          <h3 class="text-3xl md:text-4xl font-bold text-stone-900 mb-6 leading-snug">자연의 흐름을 담아내는<br>온전한 접시</h3>
+          <p class="text-stone-600 mb-6 leading-relaxed font-light">
+            '오히루(お昼)'는 계절이 바뀌는 찰나의 아름다움을 요리로 표현합니다. 
+            매일 새벽 공수하는 가장 신선한 해산물과 엄선된 제철 식재료만을 고집합니다. 
+          </p>
+          <p class="text-stone-600 leading-relaxed font-light mb-8">
+            인위적인 기교를 배제하고, 재료 본연의 맛을 극한으로 끌어올리는 
+            정통 에도마에 스시와 가이세키 요리의 진수를 경험해 보십시오.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 메뉴 섹션 (Menu) -->
+  <section id="menu" class="py-24 bg-stone-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <span class="text-red-700 font-semibold tracking-widest text-sm block mb-3">SIGNATURE MENU</span>
+        <h3 class="text-3xl md:text-4xl font-bold text-stone-900">대표 요리</h3>
+        <div class="w-12 h-0.5 bg-stone-400 mx-auto mt-6"></div>
+      </div>
+
+      <!-- 메뉴 그리드 -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+        <!-- 메뉴 1 -->
+        <div class="group bg-white cursor-pointer hover:shadow-xl transition-all duration-300 rounded-sm overflow-hidden" onclick="window.location.href='reservation.html'">
+          <div class="overflow-hidden aspect-[4/3]">
+            <img src="https://images.unsplash.com/photo-1579871494447-9811cf80d66c?q=80&w=600&auto=format&fit=crop" alt="오마카세 디너 코스" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700">
+          </div>
+          <div class="p-8 text-center border border-t-0 border-stone-200">
+            <h4 class="text-xl font-bold text-stone-900 mb-2">오히루 오마카세 (디너)</h4>
+            <p class="text-sm text-stone-500 mb-4 h-10 line-clamp-2 leading-relaxed">당일 가장 신선한 극상 식재료로 구성된 셰프 추천 15코스</p>
+            <p class="text-red-700 font-semibold tracking-wider">250,000 KRW</p>
+          </div>
+        </div>
+
+        <!-- 메뉴 2 -->
+        <div class="group bg-white cursor-pointer hover:shadow-xl transition-all duration-300 rounded-sm overflow-hidden" onclick="window.location.href='reservation.html'">
+          <div class="overflow-hidden aspect-[4/3]">
+            <img src="https://images.unsplash.com/photo-1583623025817-d180a2221d0a?q=80&w=600&auto=format&fit=crop" alt="사시미 모리아와세" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700">
+          </div>
+          <div class="p-8 text-center border border-t-0 border-stone-200">
+            <h4 class="text-xl font-bold text-stone-900 mb-2">특선 사시미 모리아와세</h4>
+            <p class="text-sm text-stone-500 mb-4 h-10 line-clamp-2 leading-relaxed">전국 각지에서 올라온 제철 활어를 완벽하게 숙성한 모둠회</p>
+            <p class="text-red-700 font-semibold tracking-wider">120,000 KRW</p>
+          </div>
+        </div>
+
+        <!-- 메뉴 3 -->
+        <div class="group bg-white cursor-pointer hover:shadow-xl transition-all duration-300 rounded-sm overflow-hidden" onclick="window.location.href='reservation.html'">
+          <div class="overflow-hidden aspect-[4/3]">
+            <img src="https://media.esprot.cloud/images/pAsI3ZMofrokpLxhQrmQ/w3Sp9XLQizKCRIEK78VB/71ffe5d7bd384383a38fdf14cfd2bf2b.jpg?quality=50&size=lg&format=webp" alt="런치 스시 코스" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700">
+          </div>
+          <div class="p-8 text-center border border-t-0 border-stone-200">
+            <h4 class="text-xl font-bold text-stone-900 mb-2">스시 코스 (런치)</h4>
+            <img src="">
+            <p class="text-sm text-stone-500 mb-4 h-10 line-clamp-2 leading-relaxed">합리적인 가격으로 즐기는 오히루의 정통 에도마에 스시 12피스</p>
+            <p class="text-red-700 font-semibold tracking-wider">90,000 KRW</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="mt-12 text-center">
+        <button onclick="showToast('전체 메뉴판(PDF)을 다운로드합니다.')" class="inline-block border-b border-stone-800 text-stone-800 hover:text-red-700 hover:border-red-700 pb-1 transition-colors tracking-widest text-sm font-medium">
+          전체 메뉴 보기 &gt;
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 분위기 & 공간 섹션 (Atmosphere) -->
+  <section id="atmosphere" class="py-24 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col-reverse md:flex-row items-center gap-16">
+        <div class="md:w-1/2 text-center md:text-left">
+          <span class="text-red-700 font-semibold tracking-widest text-sm block mb-4">ATMOSPHERE</span>
+          <h3 class="text-3xl md:text-4xl font-bold text-stone-900 mb-6 leading-snug">오롯이 미식에 집중하는<br>고요한 공간</h3>
+          <p class="text-stone-600 mb-6 leading-relaxed font-light">
+            전통 목가구와 따뜻한 조명이 어우러진 프라이빗 룸, 
+            그리고 셰프와 교감할 수 있는 12석의 다찌바가 준비되어 있습니다.
+          </p>
+          <p class="text-stone-600 leading-relaxed font-light">
+            비즈니스 모임, 상견례, 소중한 분과의 기념일 등 
+            목적에 맞는 편안하고 품격 있는 서비스를 제공합니다.
+          </p>
+          <button onclick="window.location.href='reservation.html'" class="mt-8 px-6 py-2 border border-stone-300 text-stone-700 hover:bg-stone-50 transition-colors text-sm font-medium tracking-wide">
+            룸 예약 문의
+          </button>
+        </div>
+        <div class="md:w-1/2 cursor-pointer group" onclick="showToast('매장 내부 갤러리를 엽니다.')">
+          <div class="overflow-hidden rounded-sm shadow-2xl">
+            <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=800&auto=format&fit=crop" alt="레스토랑 내부" class="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-700">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 예약 및 오시는 길 (Footer / Contact) -->
+  <footer id="contact" class="bg-stone-900 text-stone-400 py-16 border-t border-stone-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-12 text-center md:text-left">
+        
+        <!-- 매장 정보 -->
+        <div>
+          <h4 class="text-white text-2xl font-bold mb-6 tracking-widest">오히루 <span class="text-red-700 font-normal">お昼</span></h4>
+          <p class="mb-2 font-light">서울특별시 강남구 도산대로 00길 00, 2층</p>
+          <p class="mb-4 font-light">발렛 파킹 가능</p>
+          <p class="text-white text-xl tracking-wider mb-2">02-1234-5678</p>
+          <a href="#" onclick="showToast('이메일 클라이언트를 엽니다.'); return false;" class="hover:text-white transition-colors">reserve@ohiru-dining.com</a>
+        </div>
+
+        <!-- 영업 시간 -->
+        <div class="flex flex-col items-center md:items-start">
+          <h5 class="text-white font-semibold mb-6 tracking-widest">영업 시간</h5>
+          <ul class="space-y-3 font-light">
+            <li class="flex justify-between w-48 border-b border-stone-700 pb-1">
+              <span>런치 (화-일)</span>
+              <span class="text-stone-300">12:00 - 15:00</span>
+            </li>
+            <li class="flex justify-between w-48 border-b border-stone-700 pb-1">
+              <span>디너 (화-일)</span>
+              <span class="text-stone-300">18:00 - 22:00</span>
+            </li>
+            <li class="text-red-500 mt-2 font-medium">매주 월요일 정기 휴무</li>
+          </ul>
+        </div>
+
+        <!-- 예약 유도 버튼 -->
+        <div class="flex flex-col items-center md:items-start">
+          <h5 class="text-white font-semibold mb-6 tracking-widest">예약 안내</h5>
+          <p class="font-light mb-6 text-sm leading-relaxed text-stone-500">
+            모든 식사는 100% 사전 예약제로 운영됩니다. 캐치테이블 또는 전화를 통해 예약 부탁드립니다.
+          </p>
+          <button onclick="window.location.href='reservation.html'" class="bg-red-800 hover:bg-red-700 text-white px-8 py-3 w-full sm:w-auto transition-colors font-medium tracking-widest text-sm rounded-sm shadow-lg">
+            온라인 예약하기
+          </button>
+        </div>
+
+      </div>
+      
+      <!-- 카피라이트 -->
+      <div class="mt-16 pt-8 border-t border-stone-800 text-sm text-center font-light">
+        <p>© 2026 OHIRU DINING. All Rights Reserved.</p>
+        <p class="mt-2 text-stone-600 text-xs">본 사이트는 포트폴리오용으로 제작된 가상의 홈페이지입니다.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JavaScript 상호작용 -->
+  <script>
+    // 1. 토스트 알림 기능
+    function showToast(message) {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      
+      toast.className = `toast flex items-center bg-stone-900 text-white px-6 py-4 shadow-2xl text-sm font-medium tracking-wide pointer-events-auto border border-stone-700 rounded-sm`;
+      
+      // 일식집 분위기에 맞는 심플하고 정갈한 아이콘
+      toast.innerHTML = `
+        <svg class="w-5 h-5 mr-3 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        <span>${message}</span>
+      `;
+      
+      container.appendChild(toast);
+
+      // 3초 후 토스트 제거
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(10px)';
+        toast.style.transition = 'all 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
+
+    // 2. 모바일 메뉴 토글
+    const mobileBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    
+    function toggleMenu() {
+      mobileMenu.classList.toggle('hidden');
+    }
+    mobileBtn.addEventListener('click', toggleMenu);
+
+    // 3. 스크롤 시 헤더 디자인 변경 (그림자 추가 및 약간 투명해짐)
+    window.addEventListener('scroll', () => {
+      const header = document.getElementById('header');
+      if (window.scrollY > 10) {
+        header.classList.add('shadow-sm');
+      } else {
+        header.classList.remove('shadow-sm');
+      }
+    });
+  </script>
+</body>
+</html>
