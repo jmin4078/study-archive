@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <title>미야비(雅) - 메뉴</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Noto Serif KR', serif; }
+    .fade-in { animation: fadeIn 1.5s ease-out; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .menu-item-hover:hover .menu-line { width: 100%; }
+    .menu-line { transition: width 0.5s ease; }
+    /* 부드러운 스크롤 */
+    html { scroll-behavior: smooth; }
+  </style>
+</head>
+<body class="bg-stone-50 text-stone-800 antialiased overflow-x-hidden">
+
+  <!-- 헤더 / 내비게이션 바 -->
+  <header class="fixed w-full top-0 z-50 bg-white/90 backdrop-blur-md border-b border-stone-200 shadow-sm transition-all duration-300" id="header">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-20">
+        <!-- 로고 -->
+        <a href="07_2.html" class="text-2xl sm:text-3xl font-bold tracking-widest text-stone-900">
+          미야비 <span class="text-red-700 text-lg sm:text-xl ml-1">雅</span>
+        </a>
+        
+        <!-- 데스크탑 메뉴 -->
+        <nav class="hidden md:flex space-x-10 text-sm font-medium tracking-wide">
+          <a href="07_2.html#about" class="text-stone-600 hover:text-stone-900 transition-colors">소개</a>
+          <a href="menu.html" class="text-stone-900 border-b-2 border-red-700 pb-1">메뉴</a>
+          <a href="07_2.html#atmosphere" class="text-stone-600 hover:text-stone-900 transition-colors">공간</a>
+          <a href="07_2.html#contact" class="text-stone-600 hover:text-stone-900 transition-colors">예약 및 오시는 길</a>
+        </nav>
+
+        <!-- 예약 버튼 -->
+        <div class="hidden md:block">
+          <button onclick="window.location.href='reservation.html'" class="bg-stone-900 text-white px-6 py-2.5 rounded-sm hover:bg-stone-800 transition-colors text-sm font-medium tracking-wide">
+            예약하기
+          </button>
+        </div>
+
+        <!-- 모바일 햄버거 -->
+        <button id="mobile-menu-btn" class="md:hidden text-stone-800 focus:outline-none">
+          <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- 모바일 메뉴 드롭다운 -->
+    <div id="mobile-menu" class="hidden border-t border-stone-200 bg-white md:hidden absolute w-full shadow-lg z-40">
+      <ul class="flex flex-col text-sm font-medium text-stone-800 text-center py-4">
+        <li><a href="07_2.html#about" class="block py-4 hover:bg-stone-50">소개</a></li>
+        <li><a href="menu.html" class="block py-4 border-t border-stone-100 bg-stone-50 text-red-700">메뉴</a></li>
+        <li><a href="07_2.html#atmosphere" class="block py-4 border-t border-stone-100 hover:bg-stone-50">공간</a></li>
+        <li><a href="07_2.html#contact" class="block py-4 border-t border-stone-100 hover:bg-stone-50">예약 및 오시는 길</a></li>
+        <li class="pt-4 border-t border-stone-100 px-6 pb-2">
+          <button onclick="window.location.href='reservation.html'" class="w-full bg-stone-900 text-white px-6 py-3 rounded-sm">예약하기</button>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- 서브페이지 헤더 섹션 -->
+  <section class="pt-32 pb-16 bg-stone-100">
+    <div class="max-w-7xl mx-auto px-4 text-center fade-in">
+      <span class="text-red-700 font-semibold tracking-widest text-sm block mb-4">MIYABI MENU</span>
+      <h1 class="text-4xl md:text-5xl font-bold text-stone-900 mb-6">차림표</h1>
+      <p class="text-stone-600 font-light max-w-2xl mx-auto leading-relaxed">
+        계절의 흐름을 담아낸 미야비만의 특별한 미식을 경험해보세요.<br>
+        모든 코스는 제철 식재료 수급에 따라 구성이 변경될 수 있습니다.
+      </p>
+    </div>
+  </section>
+
+  <!-- 메뉴 리스트 섹션 -->
+  <section class="py-20 bg-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6">
+      
+      <!-- OMAKASE COURSE -->
+      <div class="mb-24">
+        <h2 class="text-2xl font-bold text-stone-900 mb-2 tracking-widest border-b border-stone-200 pb-4">오마카세 코스 <span class="text-sm font-normal text-stone-400 ml-2">OMAKASE COURSE</span></h2>
+        
+        <div class="mt-8 space-y-12">
+          <!-- Item -->
+          <div class="menu-item-hover group">
+            <div class="flex justify-between items-baseline mb-2">
+              <h3 class="text-xl font-semibold text-stone-800">디너 오마카세 <span class="text-sm font-normal text-stone-500 ml-2">Dinner Omakase</span></h3>
+              <span class="text-lg font-bold text-red-700">250,000</span>
+            </div>
+            <div class="w-full h-px bg-stone-200 mb-4 relative">
+              <div class="menu-line absolute top-0 left-0 h-full bg-stone-800 w-0"></div>
+            </div>
+            <p class="text-stone-600 font-light text-sm leading-relaxed">
+              전채요리 3종, 맑은 국, 특선 사시미(5종), 구이, 조림, 에도마에 스시(8pc), 튀김, 식사, 디저트<br>
+              <span class="text-stone-400 text-xs">* 최고급 제철 해산물과 한우 1++ 등급을 활용한 미야비 시그니처 코스</span>
+            </p>
+          </div>
+
+          <!-- Item -->
+          <div class="menu-item-hover group">
+            <div class="flex justify-between items-baseline mb-2">
+              <h3 class="text-xl font-semibold text-stone-800">런치 스시 오마카세 <span class="text-sm font-normal text-stone-500 ml-2">Lunch Sushi Omakase</span></h3>
+              <span class="text-lg font-bold text-red-700">120,000</span>
+            </div>
+            <div class="w-full h-px bg-stone-200 mb-4 relative">
+              <div class="menu-line absolute top-0 left-0 h-full bg-stone-800 w-0"></div>
+            </div>
+            <p class="text-stone-600 font-light text-sm leading-relaxed">
+              차완무시, 츠마미 2종, 에도마에 스시(12pc), 미소시루, 우동, 수제 아이스크림<br>
+              <span class="text-stone-400 text-xs">* 당일 수급된 가장 신선한 횟감으로 쥐어내는 스시 정찬</span>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- A LA CARTE -->
+      <div class="mb-24">
+        <h2 class="text-2xl font-bold text-stone-900 mb-2 tracking-widest border-b border-stone-200 pb-4">단품 요리 <span class="text-sm font-normal text-stone-400 ml-2">A LA CARTE</span></h2>
+        
+        <div class="mt-8 space-y-10">
+          <div class="menu-item-hover group">
+            <div class="flex justify-between items-baseline mb-2">
+              <h3 class="text-lg font-semibold text-stone-800">특선 사시미 모리아와세</h3>
+              <span class="text-md font-medium text-stone-900">120,000</span>
+            </div>
+            <p class="text-stone-500 font-light text-sm">제철 활어와 참다랑어, 우니 등 7종 이상의 고급 모둠회 (2~3인)</p>
+          </div>
+
+          <div class="menu-item-hover group">
+            <div class="flex justify-between items-baseline mb-2">
+              <h3 class="text-lg font-semibold text-stone-800">한우 1++ 채끝 숯불구이</h3>
+              <span class="text-md font-medium text-stone-900">85,000</span>
+            </div>
+            <p class="text-stone-500 font-light text-sm">비장탄에 은은하게 구워낸 최고급 한우 채끝 (150g)</p>
+          </div>
+
+          <div class="menu-item-hover group">
+            <div class="flex justify-between items-baseline mb-2">
+              <h3 class="text-lg font-semibold text-stone-800">금태 솥밥</h3>
+              <span class="text-md font-medium text-stone-900">60,000</span>
+            </div>
+            <p class="text-stone-500 font-light text-sm">제주산 최고급 금태와 특제 육수로 지어낸 명품 솥밥 (2인)</p>
+          </div>
+
+          <div class="menu-item-hover group">
+            <div class="flex justify-between items-baseline mb-2">
+              <h3 class="text-lg font-semibold text-stone-800">제철 해산물 덴푸라</h3>
+              <span class="text-md font-medium text-stone-900">45,000</span>
+            </div>
+            <p class="text-stone-500 font-light text-sm">보리새우, 붕장어, 제철 채소를 바삭하게 튀겨낸 모둠 튀김</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- BEVERAGE & SAKE -->
+      <div>
+        <h2 class="text-2xl font-bold text-stone-900 mb-2 tracking-widest border-b border-stone-200 pb-4">주류 <span class="text-sm font-normal text-stone-400 ml-2">SAKE & BEVERAGE</span></h2>
+        
+        <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-10">
+          <div>
+            <h4 class="text-stone-900 font-semibold mb-4 border-l-2 border-red-700 pl-3">프리미엄 사케</h4>
+            <ul class="space-y-4">
+              <li class="flex justify-between text-sm font-light"><span>쥬욘다이 혼마루</span> <span>650,000</span></li>
+              <li class="flex justify-between text-sm font-light"><span>지콘 쥰마이긴죠</span> <span>320,000</span></li>
+              <li class="flex justify-between text-sm font-light"><span>쿠보타 만쥬</span> <span>250,000</span></li>
+              <li class="flex justify-between text-sm font-light"><span>닷사이 23</span> <span>230,000</span></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="text-stone-900 font-semibold mb-4 border-l-2 border-red-700 pl-3">맥주 및 음료</h4>
+            <ul class="space-y-4">
+              <li class="flex justify-between text-sm font-light"><span>에비스 생맥주</span> <span>15,000</span></li>
+              <li class="flex justify-between text-sm font-light"><span>산토리 프리미엄 몰츠</span> <span>13,000</span></li>
+              <li class="flex justify-between text-sm font-light"><span>유즈슈 (유자주) 잔술</span> <span>12,000</span></li>
+              <li class="flex justify-between text-sm font-light"><span>우롱차 / 녹차</span> <span>6,000</span></li>
+            </ul>
+          </div>
+        </div>
+        <p class="mt-8 text-stone-400 text-xs font-light text-center">* 콜키지 병당 50,000원 (위스키 100,000원) - 테이블당 최대 2병</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 예약 및 오시는 길 (Footer / Contact) -->
+  <footer id="contact" class="bg-stone-900 text-stone-400 py-16 border-t border-stone-800 mt-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-12 text-center md:text-left">
+        
+        <!-- 매장 정보 -->
+        <div>
+          <h4 class="text-white text-2xl font-bold mb-6 tracking-widest">미야비 <span class="text-red-700 font-normal">雅</span></h4>
+          <p class="mb-2 font-light">서울특별시 강남구 도산대로 00길 00, 2층</p>
+          <p class="mb-4 font-light">발렛 파킹 가능</p>
+          <p class="text-white text-xl tracking-wider mb-2">02-1234-5678</p>
+          <a href="#" class="hover:text-white transition-colors">reserve@ohiru-dining.com</a>
+        </div>
+
+        <!-- 영업 시간 -->
+        <div class="flex flex-col items-center md:items-start">
+          <h5 class="text-white font-semibold mb-6 tracking-widest">영업 시간</h5>
+          <ul class="space-y-3 font-light">
+            <li class="flex justify-between w-48 border-b border-stone-700 pb-1">
+              <span>런치 (화-일)</span>
+              <span class="text-stone-300">12:00 - 15:00</span>
+            </li>
+            <li class="flex justify-between w-48 border-b border-stone-700 pb-1">
+              <span>디너 (화-일)</span>
+              <span class="text-stone-300">18:00 - 22:00</span>
+            </li>
+            <li class="text-red-500 mt-2 font-medium">매주 월요일 정기 휴무</li>
+          </ul>
+        </div>
+
+        <!-- 예약 유도 버튼 -->
+        <div class="flex flex-col items-center md:items-start">
+          <h5 class="text-white font-semibold mb-6 tracking-widest">예약 안내</h5>
+          <p class="font-light mb-6 text-sm leading-relaxed text-stone-500">
+            모든 식사는 100% 사전 예약제로 운영됩니다. 캐치테이블 또는 전화를 통해 예약 부탁드립니다.
+          </p>
+          <button onclick="window.location.href='reservation.html'" class="bg-red-800 hover:bg-red-700 text-white px-8 py-3 w-full sm:w-auto transition-colors font-medium tracking-widest text-sm rounded-sm shadow-lg">
+            온라인 예약하기
+          </button>
+        </div>
+
+      </div>
+      
+      <!-- 카피라이트 -->
+      <div class="mt-16 pt-8 border-t border-stone-800 text-sm text-center font-light">
+        <p>© 2026 MIYABI DINING. All Rights Reserved.</p>
+        <p class="mt-2 text-stone-600 text-xs">본 사이트는 포트폴리오용으로 제작된 가상의 홈페이지입니다.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // 모바일 메뉴 토글
+    const mobileBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    
+    function toggleMenu() {
+      mobileMenu.classList.toggle('hidden');
+    }
+    mobileBtn.addEventListener('click', toggleMenu);
+  </script>
+</body>
+</html>
