@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>메모장</title>
+  <title>memo. - 당신의 생각을 담는 공간</title>
   <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Noto+Serif+KR:wght@400;700&display=swap" rel="stylesheet"/>
   <style>
     :root {
@@ -12,629 +12,97 @@
       --ink: #1a1410;
       --muted: #9a8f82;
       --accent: #c0392b;
-      --accent2: #e8b84b;
       --line: #e2ddd5;
-      --shadow: rgba(60,40,20,0.10);
-      --tag-bg: #fdf3dc;
     }
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; }
 
     body {
-      background: var(--bg);
       font-family: 'Gowun Dodum', serif;
+      background: var(--bg);
       color: var(--ink);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       min-height: 100vh;
       background-image:
         radial-gradient(ellipse at 70% 10%, #f0e6cc55 0%, transparent 60%),
         radial-gradient(ellipse at 10% 90%, #e8ddd055 0%, transparent 60%);
     }
 
-    /* ── HEADER ── */
-    header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 28px 40px 18px;
-      border-bottom: 1.5px solid var(--line);
+    .container {
+      text-align: center;
+      animation: fadeIn .6s ease;
     }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     .logo {
       font-family: 'Noto Serif KR', serif;
-      font-size: 1.6rem;
+      font-size: 3.5rem;
       font-weight: 700;
-      letter-spacing: -0.02em;
-      color: var(--ink);
+      margin-bottom: 12px;
+      letter-spacing: -.02em;
     }
     .logo span { color: var(--accent); }
-    .header-actions { display: flex; gap: 10px; }
 
-    /* ── LAYOUT ── */
-    .container {
-      display: grid;
-      grid-template-columns: 260px 1fr;
-      height: calc(100vh - 73px);
+    h1 {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 2rem;
+      line-height: 1.6;
+      margin-bottom: 8px;
+      color: var(--ink);
     }
 
-    /* ── SIDEBAR ── */
-    aside {
-      border-right: 1.5px solid var(--line);
-      padding: 20px 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      overflow-y: auto;
-      background: rgba(255,253,247,0.6);
+    p {
+      font-size: 1.05rem;
+      color: var(--muted);
+      margin-bottom: 28px;
+      line-height: 1.7;
     }
-    .new-btn {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 14px;
+
+    .btn {
+      display: inline-block;
+      padding: 14px 36px;
       background: var(--accent);
       color: #fff;
+      text-decoration: none;
       border: none;
-      border-radius: 8px;
+      border-radius: 10px;
       font-family: 'Gowun Dodum', serif;
-      font-size: 0.95rem;
+      font-size: 1rem;
       cursor: pointer;
-      margin-bottom: 8px;
-      transition: background .2s, transform .1s;
-      box-shadow: 0 2px 8px rgba(192,57,43,0.18);
+      transition: all .2s;
+      box-shadow: 0 4px 12px rgba(192,57,43,0.2);
     }
-    .new-btn:hover { background: #a93226; transform: translateY(-1px); }
-    .new-btn:active { transform: translateY(0); }
+    .btn:hover {
+      background: #a93226;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(192,57,43,0.28);
+    }
+    .btn:active { transform: translateY(0); }
 
-    .search-wrap {
-      position: relative;
-      margin-bottom: 4px;
+    @media (max-width: 480px) {
+      .logo { font-size: 2.5rem; }
+      h1 { font-size: 1.5rem; }
+      p { font-size: 0.95rem; }
+      .btn { padding: 12px 28px; font-size: 0.95rem; }
     }
-    .search-wrap input {
-      width: 100%;
-      padding: 8px 10px 8px 32px;
-      border: 1.5px solid var(--line);
-      border-radius: 7px;
-      background: var(--paper);
-      font-family: 'Gowun Dodum', serif;
-      font-size: 0.88rem;
-      color: var(--ink);
-      outline: none;
-      transition: border-color .2s;
-    }
-    .search-wrap input:focus { border-color: var(--accent); }
-    .search-icon {
-      position: absolute;
-      left: 9px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--muted);
-      font-size: 0.9rem;
-    }
-
-    .section-label {
-      font-size: 0.75rem;
-      color: var(--muted);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      padding: 6px 4px 2px;
-    }
-
-    .note-list { display: flex; flex-direction: column; gap: 4px; }
-
-    .note-item {
-      padding: 10px 12px;
-      border-radius: 8px;
-      cursor: pointer;
-      border: 1.5px solid transparent;
-      transition: background .15s, border-color .15s;
-      position: relative;
-    }
-    .note-item:hover { background: #f0ebe0; }
-    .note-item.active {
-      background: var(--paper);
-      border-color: var(--line);
-      box-shadow: 0 1px 6px var(--shadow);
-    }
-    .note-item-title {
-      font-size: 0.92rem;
-      font-weight: 600;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      color: var(--ink);
-    }
-    .note-item-preview {
-      font-size: 0.78rem;
-      color: var(--muted);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      margin-top: 2px;
-    }
-    .note-item-date {
-      font-size: 0.72rem;
-      color: #bbb;
-      margin-top: 3px;
-    }
-    .note-item-del {
-      position: absolute;
-      right: 8px;
-      top: 8px;
-      background: none;
-      border: none;
-      color: #ccc;
-      cursor: pointer;
-      font-size: 0.85rem;
-      opacity: 0;
-      transition: opacity .15s, color .15s;
-      line-height: 1;
-      padding: 2px 4px;
-      border-radius: 4px;
-    }
-    .note-item:hover .note-item-del { opacity: 1; }
-    .note-item-del:hover { color: var(--accent); background: #fcecea; }
-
-    /* ── EDITOR ── */
-    main {
-      display: flex;
-      flex-direction: column;
-      padding: 36px 48px 24px;
-      overflow-y: auto;
-      background: var(--paper);
-    }
-    .editor-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 12px;
-    }
-    #note-title {
-      font-family: 'Noto Serif KR', serif;
-      font-size: 1.9rem;
-      font-weight: 700;
-      border: none;
-      outline: none;
-      background: transparent;
-      color: var(--ink);
-      width: 100%;
-      caret-color: var(--accent);
-    }
-    #note-title::placeholder { color: #d5cec4; }
-
-    .editor-meta {
-      font-size: 0.78rem;
-      color: var(--muted);
-      margin-bottom: 16px;
-      display: flex;
-      gap: 16px;
-      align-items: center;
-      border-bottom: 1px solid var(--line);
-      padding-bottom: 12px;
-    }
-
-    /* Tag input */
-    .tag-area {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      align-items: center;
-    }
-    .tag {
-      background: var(--tag-bg);
-      border: 1px solid #e8d8a0;
-      border-radius: 20px;
-      padding: 2px 10px;
-      font-size: 0.78rem;
-      color: #8a6e1e;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      cursor: default;
-      animation: tagIn .2s ease;
-    }
-    @keyframes tagIn { from { opacity: 0; transform: scale(0.85); } to { opacity: 1; transform: scale(1); } }
-    .tag-del { cursor: pointer; color: #c9a83a; font-size: 0.75rem; line-height: 1; }
-    .tag-del:hover { color: var(--accent); }
-    #tag-input {
-      border: none;
-      outline: none;
-      background: transparent;
-      font-family: 'Gowun Dodum', serif;
-      font-size: 0.78rem;
-      color: var(--muted);
-      width: 90px;
-    }
-    #tag-input::placeholder { color: #ccc; }
-
-    /* Toolbar */
-    .toolbar {
-      display: flex;
-      gap: 4px;
-      padding: 8px 0;
-      margin-bottom: 8px;
-      border-bottom: 1px solid var(--line);
-      flex-wrap: wrap;
-    }
-    .toolbar button {
-      background: none;
-      border: 1.5px solid transparent;
-      border-radius: 5px;
-      padding: 4px 9px;
-      font-size: 0.85rem;
-      cursor: pointer;
-      color: var(--ink);
-      font-family: 'Gowun Dodum', serif;
-      transition: background .15s, border-color .15s;
-    }
-    .toolbar button:hover { background: #f0ebe0; border-color: var(--line); }
-    .toolbar .sep { width: 1px; background: var(--line); margin: 2px 4px; align-self: stretch; }
-
-    /* Content area */
-    #note-content {
-      flex: 1;
-      border: none;
-      outline: none;
-      background: transparent;
-      font-family: 'Gowun Dodum', serif;
-      font-size: 1.02rem;
-      color: var(--ink);
-      line-height: 2;
-      resize: none;
-      min-height: 320px;
-      caret-color: var(--accent);
-      background-image: repeating-linear-gradient(
-        to bottom,
-        transparent,
-        transparent calc(2em - 1px),
-        #ede8df calc(2em - 1px),
-        #ede8df 2em
-      );
-      background-size: 100% 2em;
-      padding-bottom: 2em;
-    }
-    #note-content::placeholder { color: #d5cec4; }
-
-    /* Empty state */
-    .empty-state {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      color: var(--muted);
-      opacity: 0.7;
-    }
-    .empty-state .big-icon { font-size: 3rem; }
-    .empty-state p { font-size: 0.95rem; }
-
-    /* Word count badge */
-    .wc-badge {
-      display: inline-block;
-      background: #f0ebe0;
-      border-radius: 20px;
-      padding: 1px 10px;
-      font-size: 0.75rem;
-      color: var(--muted);
-    }
-
-    /* Toast */
-    .toast {
-      position: fixed;
-      bottom: 28px;
-      right: 32px;
-      background: var(--ink);
-      color: #fff;
-      padding: 10px 20px;
-      border-radius: 8px;
-      font-size: 0.88rem;
-      opacity: 0;
-      transform: translateY(12px);
-      transition: opacity .25s, transform .25s;
-      pointer-events: none;
-      z-index: 999;
-    }
-    .toast.show { opacity: 1; transform: translateY(0); }
-
-    /* Scrollbar */
-    ::-webkit-scrollbar { width: 5px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: #ddd; border-radius: 10px; }
   </style>
 </head>
 <body>
-  <header>
-    <div class="logo">memo<span>.</span></div>
-    <div class="header-actions">
-      <span id="save-status" style="font-size:0.8rem;color:var(--muted);align-self:center;"></span>
-    </div>
-  </header>
 
-  <div class="container">
-    <!-- Sidebar -->
-    <aside>
-      <button class="new-btn" onclick="newNote()">＋ 새 메모</button>
-      <div class="search-wrap">
-        <span class="search-icon">🔍</span>
-        <input type="text" id="search-input" placeholder="메모 검색..." oninput="renderList()"/>
-      </div>
-      <div class="section-label">메모 목록</div>
-      <div class="note-list" id="note-list"></div>
-    </aside>
+<div class="container">
+  <div class="logo">memo<span>.</span></div>
+  <h1>당신의 생각을 담는<br/>공간</h1>
+  <p>오늘의 생각부터 내일의 계획까지<br/>빠르고 깔끔하게 메모하세요</p>
+  <a href="memov2.html" class="btn">✏️ 메모 시작하기</a>
+</div>
 
-    <!-- Editor -->
-    <main id="editor-area">
-      <div class="empty-state" id="empty-state">
-        <div class="big-icon">📝</div>
-        <p>왼쪽에서 메모를 선택하거나 새 메모를 만들어 보세요.</p>
-      </div>
-      <div id="editor-inner" style="display:none; flex:1; display:none; flex-direction:column;">
-        <div class="editor-top">
-          <input type="text" id="note-title" placeholder="제목을 입력하세요" oninput="autoSave()"/>
-        </div>
-        <div class="editor-meta">
-          <span id="note-date-display">—</span>
-          <span class="wc-badge" id="word-count">0자</span>
-          <div class="tag-area" id="tag-area">
-            <input type="text" id="tag-input" placeholder="태그 추가..." maxlength="15"/>
-          </div>
-        </div>
-        <div class="toolbar">
-          <button onclick="fmt('bold')" title="굵게"><b>B</b></button>
-          <button onclick="fmt('italic')" title="기울임"><i>I</i></button>
-          <button onclick="fmt('underline')" title="밑줄"><u>U</u></button>
-          <button onclick="fmt('strikeThrough')" title="취소선"><s>S</s></button>
-          <div class="sep"></div>
-          <button onclick="insertLine()">── 구분선</button>
-          
-          <button onclick="insertCheckbox()">☑ 체크박스</button>
-          <div class="sep"></div>
-          <button onclick="deleteCurrentNote()" style="color:var(--accent);">🗑 삭제</button>
-        </div>
-        <div
-          id="note-content"
-          contenteditable="true"
-          spellcheck="false"
-          data-placeholder="내용을 입력하세요..."
-          oninput="onContentInput()"
-        ></div>
-      </div>
-    </main>
-  </div>
-
-  <div class="toast" id="toast"></div>
-
-  <script>
-    let notes = JSON.parse(localStorage.getItem('memo_notes') || '[]');
-    let currentId = null;
-    let saveTimer = null;
-
-    function init() {
-      renderList();
-      if (notes.length > 0) openNote(notes[0].id);
-    }
-
-    function newNote() {
-      const now = new Date();
-      const note = {
-        id: Date.now().toString(),
-        title: '',
-        content: '',
-        tags: [],
-        created: now.toISOString(),
-        updated: now.toISOString(),
-      };
-      notes.unshift(note);
-      save();
-      renderList();
-      openNote(note.id);
-      document.getElementById('note-title').focus();
-    }
-
-    function openNote(id) {
-      currentId = id;
-      const note = notes.find(n => n.id === id);
-      if (!note) return;
-      document.getElementById('empty-state').style.display = 'none';
-      const inner = document.getElementById('editor-inner');
-      inner.style.display = 'flex';
-      inner.style.flexDirection = 'column';
-      document.getElementById('note-title').value = note.title;
-      document.getElementById('note-content').innerHTML = note.content;
-      updateDateDisplay(note.updated);
-      renderTags(note.tags);
-      updateWordCount();
-      renderList();
-    }
-
-    function getCurrentNote() {
-      return notes.find(n => n.id === currentId);
-    }
-
-    function deleteCurrentNote() {
-      if (!currentId) return;
-      notes = notes.filter(n => n.id !== currentId);
-      currentId = null;
-      save();
-      renderList();
-      document.getElementById('editor-inner').style.display = 'none';
-      document.getElementById('empty-state').style.display = 'flex';
-      showToast('메모가 삭제되었습니다.');
-    }
-
-    function deleteNote(id, e) {
-      e.stopPropagation();
-      notes = notes.filter(n => n.id !== id);
-      if (currentId === id) {
-        currentId = null;
-        document.getElementById('editor-inner').style.display = 'none';
-        document.getElementById('empty-state').style.display = 'flex';
-      }
-      save();
-      renderList();
-    }
-
-    function autoSave() {
-      const note = getCurrentNote();
-      if (!note) return;
-      note.title = document.getElementById('note-title').value;
-      note.updated = new Date().toISOString();
-      clearTimeout(saveTimer);
-      document.getElementById('save-status').textContent = '저장 중...';
-      saveTimer = setTimeout(() => {
-        save();
-        document.getElementById('save-status').textContent = '저장됨 ✓';
-        renderList();
-        setTimeout(() => document.getElementById('save-status').textContent = '', 1800);
-      }, 600);
-    }
-
-    function onContentInput() {
-      const note = getCurrentNote();
-      if (!note) return;
-      note.content = document.getElementById('note-content').innerHTML;
-      note.updated = new Date().toISOString();
-      updateWordCount();
-      autoSave();
-    }
-
-    function save() {
-      localStorage.setItem('memo_notes', JSON.stringify(notes));
-    }
-
-    function renderTags(tags) {
-      const area = document.getElementById('tag-area');
-      const input = document.getElementById('tag-input');
-      area.querySelectorAll('.tag').forEach(el => el.remove());
-      tags.forEach((t, i) => {
-        const span = document.createElement('span');
-        span.className = 'tag';
-        span.innerHTML = `${t}<span class="tag-del" onclick="removeTag(${i})">✕</span>`;
-        area.insertBefore(span, input);
-      });
-    }
-
-    function removeTag(i) {
-      const note = getCurrentNote();
-      if (!note) return;
-      note.tags.splice(i, 1);
-      save();
-      renderTags(note.tags);
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-      const tagInput = document.getElementById('tag-input');
-      tagInput.addEventListener('keydown', e => {
-        if (e.key === 'Enter' || e.key === ',') {
-          e.preventDefault();
-          const val = tagInput.value.trim().replace(/,$/, '');
-          if (!val) return;
-          const note = getCurrentNote();
-          if (!note) return;
-          if (!note.tags.includes(val) && note.tags.length < 6) {
-            note.tags.push(val);
-            save();
-            renderTags(note.tags);
-          }
-          tagInput.value = '';
-        }
-        if (e.key === 'Backspace' && tagInput.value === '') {
-          const note = getCurrentNote();
-          if (!note || note.tags.length === 0) return;
-          note.tags.pop();
-          save();
-          renderTags(note.tags);
-        }
-      });
-    });
-
-    function renderList() {
-      const q = (document.getElementById('search-input')?.value || '').toLowerCase();
-      const list = document.getElementById('note-list');
-      list.innerHTML = '';
-      const filtered = notes.filter(n =>
-        n.title.toLowerCase().includes(q) || stripHtml(n.content).toLowerCase().includes(q)
-      );
-      if (filtered.length === 0) {
-        list.innerHTML = '<div style="color:var(--muted);font-size:0.82rem;padding:10px 4px;">메모가 없습니다.</div>';
-        return;
-      }
-      filtered.forEach(note => {
-        const div = document.createElement('div');
-        div.className = 'note-item' + (note.id === currentId ? ' active' : '');
-        div.onclick = () => openNote(note.id);
-        const d = new Date(note.updated);
-        const dateStr = `${d.getMonth()+1}/${d.getDate()} ${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`;
-        div.innerHTML = `
-          <div class="note-item-title">${note.title || '제목 없음'}</div>
-          <div class="note-item-preview">${stripHtml(note.content) || '내용 없음'}</div>
-          <div class="note-item-date">${dateStr}</div>
-          <button class="note-item-del" onclick="deleteNote('${note.id}', event)">✕</button>
-        `;
-        list.appendChild(div);
-      });
-    }
-
-    function stripHtml(html) {
-      return html.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
-    }
-
-    function updateDateDisplay(iso) {
-      const d = new Date(iso);
-      document.getElementById('note-date-display').textContent =
-        `${d.getFullYear()}.${d.getMonth()+1}.${d.getDate()} ${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`;
-    }
-
-    function updateWordCount() {
-      const text = document.getElementById('note-content').textContent.replace(/\s/g, '');
-      document.getElementById('word-count').textContent = text.length + '자';
-    }
-
-    function showToast(msg) {
-      const t = document.getElementById('toast');
-      t.textContent = msg;
-      t.classList.add('show');
-      setTimeout(() => t.classList.remove('show'), 2000);
-    }
-
-    function fmt(cmd) {
-      document.getElementById('note-content').focus();
-      document.execCommand(cmd, false, null);
-      onContentInput();
-    }
-
-    function insertLine() {
-      document.getElementById('note-content').focus();
-      document.execCommand('insertHTML', false, '<hr style="border:none;border-top:1px solid #e0d8cc;margin:12px 0;"/>');
-      onContentInput();
-    }
-
-    function insertDate() {
-      const now = new Date();
-      const str = `${now.getFullYear()}년 ${now.getMonth()+1}월 ${now.getDate()}일`;
-      document.getElementById('note-content').focus();
-      document.execCommand('insertHTML', false, `<span style="color:var(--accent);font-size:0.88em;">${str}</span> `);
-      onContentInput();
-    }
-
-    function insertCheckbox() {
-      document.getElementById('note-content').focus();
-      document.execCommand('insertHTML', false,
-        `<span contenteditable="false" style="user-select:none;cursor:pointer;margin-right:6px;" onclick="this.textContent=this.textContent==='☐'?'☑':'☐'">☐</span>`);
-      onContentInput();
-    }
-
-    const content = document.getElementById('note-content');
-    if (content) {
-      content.addEventListener('focus', function() {
-        if (this.innerHTML.trim() === '') this.innerHTML = '';
-      });
-    }
-
-    document.addEventListener('keydown', e => {
-      if ((e.ctrlKey || e.metaKey) && e.key === 'n') { e.preventDefault(); newNote(); }
-      if ((e.ctrlKey || e.metaKey) && e.key === 's') { e.preventDefault(); showToast('자동으로 저장됩니다 ✓'); }
-    });
-
-    init();
-  </script>
 </body>
 </html>
