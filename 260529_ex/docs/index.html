@@ -265,6 +265,7 @@
       transition: background .15s, border-color .15s;
     }
     .toolbar button:hover { background: #f0ebe0; border-color: var(--line); }
+    .toolbar button.active { background: var(--tag-bg); border-color: #e8d8a0; color: var(--accent); }
     .toolbar .sep { width: 1px; background: var(--line); margin: 2px 4px; align-self: stretch; }
 
     /* Content area */
@@ -443,6 +444,7 @@
       renderTags(note.tags);
       updateWordCount();
       renderList();
+      updateToolbarState();
     }
 
     function getCurrentNote() {
@@ -602,6 +604,22 @@
       document.getElementById('note-content').focus();
       document.execCommand(cmd, false, null);
       onContentInput();
+      updateToolbarState();
+    }
+
+    function updateToolbarState() {
+      const content = document.getElementById('note-content');
+      if (!content) return;
+      
+      const btnBold = document.querySelector('.toolbar button[onclick*="bold"]');
+      const btnItalic = document.querySelector('.toolbar button[onclick*="italic"]');
+      const btnUnderline = document.querySelector('.toolbar button[onclick*="underline"]');
+      const btnStrike = document.querySelector('.toolbar button[onclick*="strikeThrough"]');
+
+      if (btnBold) btnBold.classList.toggle('active', document.queryCommandState('bold'));
+      if (btnItalic) btnItalic.classList.toggle('active', document.queryCommandState('italic'));
+      if (btnUnderline) btnUnderline.classList.toggle('active', document.queryCommandState('underline'));
+      if (btnStrike) btnStrike.classList.toggle('active', document.queryCommandState('strikeThrough'));
     }
 
     function insertLine() {
@@ -637,6 +655,7 @@
       if ((e.ctrlKey || e.metaKey) && e.key === 's') { e.preventDefault(); showToast('자동으로 저장됩니다 ✓'); }
     });
 
+    document.addEventListener('selectionchange', updateToolbarState);
     init();
   </script>
 </body>
