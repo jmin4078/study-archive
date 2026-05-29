@@ -472,29 +472,32 @@
       renderList();
     }
 
-    function autoSave() {
-      const note = getCurrentNote();
-      if (!note) return;
-      note.title = document.getElementById('note-title').value;
-      note.updated = new Date().toISOString();
-      clearTimeout(saveTimer);
-      document.getElementById('save-status').textContent = '저장 중...';
-      saveTimer = setTimeout(() => {
-        save();
-        document.getElementById('save-status').textContent = '저장됨 ✓';
-        renderList();
-        setTimeout(() => document.getElementById('save-status').textContent = '', 1800);
-      }, 600);
-    }
+     function autoSave() {
+       console.log('autoSave triggered');
+       const note = getCurrentNote();
+       if (!note) return;
+       note.title = document.getElementById('note-title').value;
+       note.updated = new Date().toISOString();
+       clearTimeout(saveTimer);
+       document.getElementById('save-status').textContent = '저장 중...';
+       saveTimer = setTimeout(() => {
+         save();
+         console.log('Note saved to localStorage');
+         document.getElementById('save-status').textContent = '저장됨 ✓';
+         renderList();
+         setTimeout(() => document.getElementById('save-status').textContent = '', 1800);
+       }, 600);
+     }
 
-    function onContentInput() {
-      const note = getCurrentNote();
-      if (!note) return;
-      note.content = document.getElementById('note-content').innerHTML;
-      note.updated = new Date().toISOString();
-      updateWordCount();
-      autoSave();
-    }
+     function onContentInput() {
+       console.log('onContentInput triggered');
+       const note = getCurrentNote();
+       if (!note) return;
+       note.content = document.getElementById('note-content').innerHTML;
+       note.updated = new Date().toISOString();
+       updateWordCount();
+       autoSave();
+     }
 
     function save() {
       localStorage.setItem('memo_notes', JSON.stringify(notes));
