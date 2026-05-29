@@ -265,7 +265,6 @@
       transition: background .15s, border-color .15s;
     }
     .toolbar button:hover { background: #f0ebe0; border-color: var(--line); }
-    .toolbar button.active { background: var(--tag-bg); border-color: #e8d8a0; color: var(--accent); }
     .toolbar .sep { width: 1px; background: var(--line); margin: 2px 4px; align-self: stretch; }
 
     /* Content area */
@@ -385,7 +384,7 @@
           <button onclick="fmt('strikeThrough')" title="취소선"><s>S</s></button>
           <div class="sep"></div>
           <button onclick="insertLine()">── 구분선</button>
-          
+          <button onclick="insertDate()">📅 날짜</button>
           <button onclick="insertCheckbox()">☑ 체크박스</button>
           <div class="sep"></div>
           <button onclick="deleteCurrentNote()" style="color:var(--accent);">🗑 삭제</button>
@@ -444,7 +443,6 @@
       renderTags(note.tags);
       updateWordCount();
       renderList();
-      updateToolbarState();
     }
 
     function getCurrentNote() {
@@ -474,32 +472,29 @@
       renderList();
     }
 
-     function autoSave() {
-       console.log('autoSave triggered');
-       const note = getCurrentNote();
-       if (!note) return;
-       note.title = document.getElementById('note-title').value;
-       note.updated = new Date().toISOString();
-       clearTimeout(saveTimer);
-       document.getElementById('save-status').textContent = '저장 중...';
-       saveTimer = setTimeout(() => {
-         save();
-         console.log('Note saved to localStorage');
-         document.getElementById('save-status').textContent = '저장됨 ✓';
-         renderList();
-         setTimeout(() => document.getElementById('save-status').textContent = '', 1800);
-       }, 600);
-     }
+    function autoSave() {
+      const note = getCurrentNote();
+      if (!note) return;
+      note.title = document.getElementById('note-title').value;
+      note.updated = new Date().toISOString();
+      clearTimeout(saveTimer);
+      document.getElementById('save-status').textContent = '저장 중...';
+      saveTimer = setTimeout(() => {
+        save();
+        document.getElementById('save-status').textContent = '저장됨 ✓';
+        renderList();
+        setTimeout(() => document.getElementById('save-status').textContent = '', 1800);
+      }, 600);
+    }
 
-     function onContentInput() {
-       console.log('onContentInput triggered');
-       const note = getCurrentNote();
-       if (!note) return;
-       note.content = document.getElementById('note-content').innerHTML;
-       note.updated = new Date().toISOString();
-       updateWordCount();
-       autoSave();
-     }
+    function onContentInput() {
+      const note = getCurrentNote();
+      if (!note) return;
+      note.content = document.getElementById('note-content').innerHTML;
+      note.updated = new Date().toISOString();
+      updateWordCount();
+      autoSave();
+    }
 
     function save() {
       localStorage.setItem('memo_notes', JSON.stringify(notes));
@@ -589,7 +584,7 @@
     }
 
     function updateWordCount() {
-      const text = stripHtml(document.getElementById('note-content').innerHTML);
+      const text = document.getElementById('note-content').textContent.replace(/\s/g, '');
       document.getElementById('word-count').textContent = text.length + '자';
     }
 
@@ -604,22 +599,6 @@
       document.getElementById('note-content').focus();
       document.execCommand(cmd, false, null);
       onContentInput();
-      updateToolbarState();
-    }
-
-    function updateToolbarState() {
-      const content = document.getElementById('note-content');
-      if (!content) return;
-      
-      const btnBold = document.querySelector('.toolbar button[onclick*="bold"]');
-      const btnItalic = document.querySelector('.toolbar button[onclick*="italic"]');
-      const btnUnderline = document.querySelector('.toolbar button[onclick*="underline"]');
-      const btnStrike = document.querySelector('.toolbar button[onclick*="strikeThrough"]');
-
-      if (btnBold) btnBold.classList.toggle('active', document.queryCommandState('bold'));
-      if (btnItalic) btnItalic.classList.toggle('active', document.queryCommandState('italic'));
-      if (btnUnderline) btnUnderline.classList.toggle('active', document.queryCommandState('underline'));
-      if (btnStrike) btnStrike.classList.toggle('active', document.queryCommandState('strikeThrough'));
     }
 
     function insertLine() {
@@ -655,7 +634,6 @@
       if ((e.ctrlKey || e.metaKey) && e.key === 's') { e.preventDefault(); showToast('자동으로 저장됩니다 ✓'); }
     });
 
-    document.addEventListener('selectionchange', updateToolbarState);
     init();
   </script>
 </body>
