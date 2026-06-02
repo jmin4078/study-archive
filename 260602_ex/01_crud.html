@@ -28,9 +28,33 @@
   async function joinHandler(event) {
     event.preventDefault();
     console.log("joinForm");
+    const formData = new FormData(event.target);
+    console.log(...formData);
+    const email = formData.get("auth-email");
+    const password = formData.get("auth-password");
+    try {
+      joinWithSupabase(email, password);
+      console.log(result);
+      console.log("가입완료");
+    } catch (error) {
+      console.log("가입실패");
+    }
   }
 
-  async function joinWithSupabase() {}
+  async function joinWithSupabase(email, password) {
+    const res = fetch(`${SUPABASE_URL}/auth/v1/signup`,{method: "POST",headers: {
+        apikey: SUPABASE_PUB_KEY,
+        "Content-Type": "application/json",
+    },
+    body: JSON.stringify({email,password}),});
+    console.log(res.status);
+    console.log(res.ok);
+    const json = await res.json();
+    if(!res.ok) {
+        throw new Error(JSON.stringify(json));
+    }
+    return json;
+  }
 </script>
   </body>
 </html>
