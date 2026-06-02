@@ -1,0 +1,36 @@
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Supabase</title>
+  </head>
+  <body>
+    <form id="join">
+      <h1>회원가입</h1>
+      <input type="email" name="auth-email" placeholder="123@gmail.com" />
+      <input
+        type="password"
+        name="auth-password"
+        placeholder="6자리 이상 비밀번호 입력"
+      />
+      <button type="submit">가입</button>
+    </form>
+   <script>
+  // https://supabase.com/dashboard/project/본인프로젝트ID
+  const SUPABASE_URL = "https://uyiaanjwthjhissjukig.supabase.co";
+  const SUPABASE_PUB_KEY = "sb_publishable_oBPijEsRfhIbPDxvdcjISQ_aDj9cJBF";
+
+  // # 안빼먹기
+  const joinForm = document.querySelector("#join");
+  // submit 안 빼먹고 click이랑 안 헷갈리기
+  joinForm.addEventListener("submit", joinHandler);
+
+  async function joinHandler(event) {
+    event.preventDefault();
+    console.log("joinForm");
+  }
+
+  async function joinWithSupabase() {}
+</script>
+  </body>
+</html>
