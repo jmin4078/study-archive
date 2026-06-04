@@ -19,15 +19,48 @@ app.use(express.static(path.join(__dirname, "public")));
 app.post("/chat", async (req, res) => {
   // 입력 (JSON)
   const { provider, model, ask } = req.body;
+  console.log("provider", provider);
+  console.log("model", model);
+  console.log("ask", ask);
   // 로직 (AI Provider)
-
+  let result;
+  console.log("[서버 요청 시작]");
+  switch (true) {
+    case provider === "google":
+      console.log("google 제공자 요청");
+      result = await useGoogle(model, ask);
+      break;
+    case provider === "groq":
+      console.log("groq 제공자 요청");
+      result = await useGroq(model, ask);
+      break;
+    default:
+      console.log("잘못된 Provider");
+      res.status(404).json({ msg: "존재하지 않는 Provider" });
+      return;
+  }
+  console.log("[서버 요청 완료]");
   // 출력 (JSON)
   res.json({
-    provider,
-    model,
-    ask,
+    result,
   });
 });
+
+async function useGoogle(model, ask) {
+  const response = await google.models.generateContent({
+    model, // 못 쓰는 모델은 예외처리될 예정
+    contents: ask,
+  });
+  return response.text;
+}
+
+async function useGroq(model, ask) {
+  const response = await groq.chat.completions.create({
+    messages: [{ role: "user", content: ask }],
+    model,
+  });
+  return response.choices[0].message.content;
+}
 
 app.listen(PORT, () => {
   console.log(`${PORT}에서 실행`);
