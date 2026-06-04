@@ -1,8 +1,13 @@
 {
   "scripts": {
     "01": "nodemon 01_express.js",
-    "02": "nodemon 02_sdk.js"
+    "02": "nodemon 02_sdk.js",
+    "03": "nodemon 03_chat.js",
+    "04": "nodemon 04_deploy.js"
   },
+  
+  
+
   "dependencies": {
     "@google/genai": "^2.8.0",
     "dotenv": "^17.4.2",
