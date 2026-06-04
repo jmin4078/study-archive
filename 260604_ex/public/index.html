@@ -366,7 +366,7 @@
       to   { opacity: 1; }
     }
 
-    .message.user { flex-direction: row-reverse; align-self: flex-end; }
+    .message.user { flex-direction: row-reverse; align-self: flex-end; max-width: 68%; }
 
     .avatar {
       width: 34px; height: 34px;
@@ -392,7 +392,7 @@
       border-radius: 14px;
       line-height: 1.7;
       font-size: 13.5px;
-      max-width: calc(100% - 50px);
+      max-width: 100%;
       position: relative;
       word-break: break-word;
     }
@@ -579,11 +579,11 @@
         class="model-input"
         id="model-input"
         placeholder="모델명 입력..."
-        value="gemini-2.5-flash"
+        value="gemini-3-flash"
       />
       <div class="model-hints" id="model-hints">
-        <div class="model-hint" onclick="setModel('gemini-2.5-flash')">gemini-2.5-flash</div>
-        <div class="model-hint" onclick="setModel('gemini-2.5-pro')">gemini-2.5-pro</div>
+        <div class="model-hint" onclick="setModel('gemini-3-flash')">gemini-3-flash</div>
+        <div class="model-hint" onclick="setModel('gemini-3.1-flash-lite')">gemini-3.1-flash-lite</div>
         <div class="model-hint" onclick="setModel('gemini-2.5-flash-lite')">gemini-2.5-flash-lite</div>
       </div>
     </div>
@@ -614,7 +614,7 @@
         </span>
       </div>
       <div class="header-actions">
-        <span style="font-size:11px; color: var(--text-muted)" id="model-label">gemini-2.5-flash</span>
+        <span style="font-size:11px; color: var(--text-muted)" id="model-label">gemini-3-flash</span>
       </div>
     </div>
 
@@ -654,8 +654,8 @@
   let isLoading = false;
 
   const MODELS = {
-    google: ['gemini-2.5-flash', 'gemini-2.5-pro', 'gemini-2.5-flash-lite'],
-    groq: ['llama3-8b-8192', 'llama3-70b-8192', 'mixtral-8x7b-32768', 'gemma2-9b-it']
+    google: ['gemini-3-flash', 'gemini-3.1-flash-lite', 'gemini-2.5-flash-lite'],
+    groq: ['llama-3.1-8b-instant', 'llama-3.3-70b-versatile', 'gemma2-9b-it']
   };
 
   // ── Provider change ──
