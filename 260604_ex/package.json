@@ -1,23 +1,7 @@
 {
-  "name": "260604_ex",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "01": "nodemon 01_express.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/jmin4078/260604_ex.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
-  "bugs": {
-    "url": "https://github.com/jmin4078/260604_ex/issues"
-  },
-  "homepage": "https://github.com/jmin4078/260604_ex#readme",
   "dependencies": {
     "express": "^5.2.1"
   },
