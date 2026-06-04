@@ -579,10 +579,9 @@
         class="model-input"
         id="model-input"
         placeholder="모델명 입력..."
-        value="gemini-3-flash"
+        value="gemini-3.1-flash-lite"
       />
       <div class="model-hints" id="model-hints">
-        <div class="model-hint" onclick="setModel('gemini-3-flash')">gemini-3-flash</div>
         <div class="model-hint" onclick="setModel('gemini-3.1-flash-lite')">gemini-3.1-flash-lite</div>
         <div class="model-hint" onclick="setModel('gemini-2.5-flash-lite')">gemini-2.5-flash-lite</div>
       </div>
@@ -614,7 +613,7 @@
         </span>
       </div>
       <div class="header-actions">
-        <span style="font-size:11px; color: var(--text-muted)" id="model-label">gemini-3-flash</span>
+        <span style="font-size:11px; color: var(--text-muted)" id="model-label">gemini-3.1-flash-lite</span>
       </div>
     </div>
 
@@ -654,8 +653,8 @@
   let isLoading = false;
 
   const MODELS = {
-    google: ['gemini-3-flash', 'gemini-3.1-flash-lite', 'gemini-2.5-flash-lite'],
-    groq: ['llama-3.1-8b-instant', 'llama-3.3-70b-versatile', 'gemma2-9b-it']
+    google: ['gemini-3.1-flash-lite', 'gemini-2.5-flash-lite'],
+    groq: ['llama-3.1-8b-instant', 'llama-3.3-70b-versatile']
   };
 
   // ── Provider change ──
