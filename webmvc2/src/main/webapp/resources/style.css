@@ -1,3 +1,4 @@
+/* src/main/webapp/resources/style.css */
 @font-face {
     font-family: 'ElegantSerif';
     src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2604-1@1.0/GraceSerif-Regular.woff2') format('woff2');
@@ -12,6 +13,21 @@
     font-display: swap;
 }
 
-* {
+@font-face {
+    font-family: 'ArittaDodum';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/Arita-dotum-Medium.woff') format('woff');
+    font-weight: normal;
+    font-display: swap;
+}
+
+h1, h2, h3, h4, h5, h6 {
     font-family: 'ElegantSerif', serif;
+}
+
+body {
+    font-family: 'ArittaDodum', sans-serif;
+}
+
+form * {
+    font-family: 'ArittaDodum', sans-serif;
 }
