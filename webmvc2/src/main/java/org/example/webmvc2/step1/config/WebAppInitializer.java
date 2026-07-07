@@ -13,7 +13,7 @@ public class WebAppInitializer implements WebApplicationInitializer {
     public void onStartup(ServletContext servletContext) throws ServletException {
         // 스프링 컨테이너와 서블릿 컨테이너 연동
         AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
-        context.register(WebConfig.class);
+        context.register(org.example.webmvc2.step1.config.WebConfig.class);
         servletContext.addListener(new ContextLoaderListener(context));
         // 디스패처 서블릿
         DispatcherServlet dispatcherServlet = new DispatcherServlet(context);
