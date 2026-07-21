@@ -7,7 +7,7 @@
 <body>
 <h1>Hello MyBatis!</h1>
 <section>
-    <c:url var="boardDetailUrl" value="/board/${board.id}"></c:url>
+    <c:url var="boardDetailUrl" value="/board/${board.id}" />
     <form action="${boardDetailUrl}" method="post">
         <input name="id" readonly value="${board.id}"><br>
         <input name="title" value="${board.title}" placeholder="제목"><br>

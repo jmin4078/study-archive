@@ -26,5 +26,6 @@
         <a href="${boardDetailUrl}">자세히보기</a>
     </c:forEach>
 </section>
+
 </body>
 </html>
