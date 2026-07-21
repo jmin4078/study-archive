@@ -3,7 +3,36 @@
 <mapper namespace="org.example.mybatis.mapper.BoardMapper">
     <!-- id = 메서드명 -->
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO BOARDS (title, content, writer)
-        VALUES (#{title}, #{content}, #{writer})
+        INSERT INTO BOARDS
+        (title, content, writer)
+        VALUES
+        (#{title}, #{content}, #{writer})
     </insert>
+    <!--  findAll  -->
+    <!--    <select id="findAll" resultType="org.example.mybatis.entity.Board">-->
+    <!--        SELECT * FROM BOARDS-->
+    <!--    </select>-->
+    <select id="findAll" resultType="org.example.mybatis.entity.Board">
+        SELECT
+        id, title, content, writer, created_at
+        FROM BOARDS
+    </select>
+
+    <select id="findById" resultType="org.example.mybatis.entity.Board">
+        SELECT
+        id, title, content, writer, created_at
+        FROM BOARDS
+        WHERE id = #{id}
+    </select>
+
+    <update id="update">
+        UPDATE BOARDS
+        SET title = #{title}, content = #{content}, writer = #{writer}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete">
+        DELETE FROM BOARDS
+        WHERE id = #{id}
+    </delete>
 </mapper>
