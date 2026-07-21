@@ -1,10 +1,4 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: user
-  Date: 26. 7. 21.
-  Time: 오전 10:16
-  To change this template use File | Settings | File Templates.
---%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -12,5 +6,14 @@
 </head>
 <body>
 <h1>Hello MyBatis!</h1>
+<section>
+    <c:url var="boardUrl" value="/board" />
+    <form action="${boardUrl}" method="post">
+        <input name="title" placeholder="제목"><br>
+        <input name="content" placeholder="내용"><br>
+        <input name="writer" placeholder="작성자"><br>
+        <button>등록</button>
+    </form>
+</section>
 </body>
 </html>
