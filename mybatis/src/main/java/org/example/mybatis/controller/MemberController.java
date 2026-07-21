@@ -18,6 +18,7 @@ public class MemberController {
     @GetMapping
     public String page(Model model) {
         // model...
+        model.addAttribute("members", memberService.findAll());
         return "member";
     }
 

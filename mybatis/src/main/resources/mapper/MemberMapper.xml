@@ -8,4 +8,23 @@
         VALUES
         (#{name}, #{email})
     </insert>
+    <!--  id, name, email / member_id, mem_name, mem_email -->
+    <!--    <select id="findAll" resultType="org.example.mybatis.dto.MemberViewDTO">-->
+    <!--        SELECT member_id AS id, mem_name AS name, mem_email AS email-->
+    <!--        FROM MEMBERS-->
+    <!--    </select>-->
+    <!-- AS를 통해 Alias로 복잡하게 하지 않고 해당 쿼리의 결과를 명시적으로 객체로 연결 -->
+    <!--  resultMap 사용 시 record X. class로 된 걸 사용해야한다 (setter 문제)  -->
+    <!--    <resultMap id="memberDetailMap" type="org.example.mybatis.dto.MemberViewDTO">-->
+    <resultMap id="memberDetailMap" type="org.example.mybatis.entity.Member">
+        <result property="id" column="member_id"/>
+        <result property="name" column="mem_name"/>
+        <result property="email" column="mem_email"/>
+    </resultMap>
+
+    <!--  member_id, mem_name, mem_email  -->
+    <select id="findAll" resultMap="memberDetailMap">
+        SELECT *
+        FROM MEMBERS
+    </select>
 </mapper>
