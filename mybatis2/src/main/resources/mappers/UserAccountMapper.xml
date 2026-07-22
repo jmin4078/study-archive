@@ -38,4 +38,45 @@
             </if>
         </where>
     </select>
+    <!--  step2-2  -->
+    <select id="findById" resultType="org.example.mybatis2.entity.UserAccount">
+        SELECT * FROM USERS WHERE id = #{id}
+    </select>
+    <!--    <update id="update">-->
+    <!--        UPDATE USERS-->
+    <!--        SET name = #{name},-->
+    <!--            email = #{email},-->
+    <!--            age = #{age},-->
+    <!--            city = #{city}-->
+    <!--        WHERE id = #{id}-->
+    <!--    </update>-->
+    <update id="update">
+        UPDATE USERS
+        <set>
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="email != null and email != ''">email = #{email},</if>
+            <if test="age != null">age = #{age},</if>
+            <if test="city != null and city != ''">city = #{city},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+    <!--  step2-3  -->
+    <select id="findAllSorted" resultType="org.example.mybatis2.entity.UserAccount">
+        SELECT * FROM USERS
+        ORDER BY
+        <choose>
+            <when test="sort == 'name'">name</when>
+            <when test="sort == 'email'">email</when>
+            <when test="sort == 'age'">age</when>
+            <when test="sort == 'city'">city</when>
+            <otherwise>id</otherwise>
+        </choose>
+    </select>
+    <delete id="deleteByIds">
+        DELETE FROM USERS WHERE id IN
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+        <!--    (1, 2, 3, ...)    -->
+    </delete>
 </mapper>

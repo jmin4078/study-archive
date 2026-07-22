@@ -13,6 +13,6 @@ public class UserAccount {
     private long id; // BIGINT, PK
     private String name;
     private String email;
-    private int age;
+    private Integer age;
     private String city;
 }

@@ -6,6 +6,25 @@
 </head>
 <body>
 <h1>User Account</h1>
+<%-- Sort --%>
+<section>
+  <form method="get" action="/users/sorted">
+    <select name="sort">
+      <option value="name">이름</option>
+      <option value="city">도시</option>
+    </select>
+    <button>제출</button>
+  </form>
+</section>
+<%-- delete ids --%>
+<section>
+  <form method="post" action="/users/delete">
+    <input name="ids">
+    <%--    ,로 구분해서 넣기    --%>
+    <button>제출</button>
+  </form>
+</section>
+
 <section>
   <c:url var="searchUrl" value="/users/search"/>
   <form method="get" action="${searchUrl}">
@@ -26,7 +45,10 @@
 </section>
 <section>
   <c:forEach items="${users}" var="user">
-    <p>${user.name} ${user.email} ${user.age} ${user.city}</p>
+    <p>
+        ${user.name} ${user.email} ${user.age} ${user.city}<br>
+      <a href="<c:url value="/users/${user.id}" />">자세히보기</a>
+    </p>
   </c:forEach>
 </section>
 </body>
