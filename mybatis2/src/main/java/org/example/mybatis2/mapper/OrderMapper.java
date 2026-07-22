@@ -1,6 +1,7 @@
 package org.example.mybatis2.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.example.mybatis2.dto.MemberWithOrdersDTO;
 import org.example.mybatis2.entity.Member;
 import org.example.mybatis2.entity.Order;
 
@@ -15,4 +16,6 @@ public interface OrderMapper {
     void insertOrder(Order order);
 
     void insertMember(Member member);
+
+    List<MemberWithOrdersDTO> findAllMembersWithOrders();
 }

@@ -18,6 +18,7 @@ public class OrderController {
     public String page(Model model) {
         model.addAttribute("members", orderService.findAllMembers());
         model.addAttribute("orders", orderService.findAllOrders());
+        model.addAttribute("membersWithOrders", orderService.findAllMembersWithOrders());
         return "order";
     }
 
@@ -27,7 +28,7 @@ public class OrderController {
         return "redirect:/orders";
     }
 
-    @PostMapping("/")
+    @PostMapping
     public String insertOrder(@ModelAttribute Order order, @RequestParam Long memberId) {
         Member m = new Member();
         m.setId(memberId);

@@ -43,4 +43,28 @@
         INSERT INTO ORDERS(product_name, member_id)
         VALUES(#{productName}, #{member.id})
     </insert>
+
+    <!--  3-2  -->
+    <resultMap id="memberWithOrdersResultMap" type="org.example.mybatis2.dto.MemberWithOrdersDTO">
+        <id property="id" column="member_id"/>
+        <result property="name" column="member_name"/>
+        <result property="email" column="member_email"/>
+        <collection property="orders" javaType="org.example.mybatis2.entity.Order">
+            <id property="id" column="order_id"/>
+            <result property="productName" column="product_name"/>
+            <result property="orderDate" column="order_date"/>
+        </collection>
+    </resultMap>
+    <select id="findAllMembersWithOrders" resultMap="memberWithOrdersResultMap">
+        SELECT
+        m.id AS member_id,
+        m.name AS member_name,
+        m.email AS member_email,
+        o.id AS order_id,
+        o.product_name AS product_name,
+        o.order_date AS order_date
+        FROM MEMBERS m
+        LEFT JOIN ORDERS o
+        ON o.member_id = m.id
+    </select>
 </mapper>

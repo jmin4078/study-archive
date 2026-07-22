@@ -1,6 +1,7 @@
 package org.example.mybatis2.service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.mybatis2.dto.MemberWithOrdersDTO;
 import org.example.mybatis2.entity.Member;
 import org.example.mybatis2.entity.Order;
 import org.example.mybatis2.mapper.OrderMapper;
@@ -29,5 +30,9 @@ public class OrderService {
 
     public List<Order> findAllOrders() {
         return orderMapper.findAllOrders();
+    }
+
+    public List<MemberWithOrdersDTO> findAllMembersWithOrders() {
+        return orderMapper.findAllMembersWithOrders();
     }
 }
