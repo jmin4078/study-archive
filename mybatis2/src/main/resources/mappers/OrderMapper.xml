@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.mybatis2.mapper.OrderMapper">
+    <resultMap id="orderResultMap" type="org.example.mybatis2.entity.Order">
+        <id property="id" column="order_id"/>
+        <result property="productName" column="product_name"/>
+        <result property="orderDate" column="order_date"/>
+        <!--    하위 객체를 연결해주기 위해선 resultMap을 사용하여 JOIN을 통해 추가된 컬럼을 받아줘야함    -->
+        <association property="member" javaType="org.example.mybatis2.entity.Member">
+            <id property="id" column="member_id"/>
+            <result property="name" column="member_name"/>
+            <result property="email" column="member_email"/>
+        </association>
+    </resultMap>
+
+    <select id="findAllOrders" resultMap="orderResultMap">
+        SELECT
+        o.id AS order_id,
+        o.product_name AS product_name,
+        o.order_date AS order_date,
+        m.id AS member_id,
+        m.name AS member_name,
+        m.email AS member_email
+        FROM ORDERS o
+        JOIN MEMBERS m
+        ON o.member_id = m.id
+    </select>
+
+    <select id="findAllMembers" resultType="org.example.mybatis2.entity.Member">
+        SELECT
+        *
+        FROM MEMBERS m
+    </select>
+
+    <insert id="insertMember" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO MEMBERS(name, email)
+        VALUES(#{name}, #{email})
+    </insert>
+
+    <insert id="insertOrder" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO ORDERS(product_name, member_id)
+        VALUES(#{productName}, #{member.id})
+    </insert>
+</mapper>
