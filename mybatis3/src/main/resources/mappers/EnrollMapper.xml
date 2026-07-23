@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.mybatis3.mapper.EnrollMapper">
+    <insert id="insertStudent" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO STUDENTS
+        (name)
+        VALUES
+        (#{name})
+    </insert>
+    <insert id="insertCourse" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO COURSES
+        (name)
+        VALUES
+        (#{name})
+    </insert>
+    <select id="findAllStudents" resultType="org.example.mybatis3.model.Student">
+        SELECT * FROM STUDENTS
+    </select>
+    <select id="findAllCourses" resultType="org.example.mybatis3.model.Course">
+        SELECT * FROM COURSES
+    </select>
+</mapper>

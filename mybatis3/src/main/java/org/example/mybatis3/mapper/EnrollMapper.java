@@ -9,7 +9,10 @@ import java.util.List;
 @Mapper
 public interface EnrollMapper {
     void insertStudent(Student student);
+
     void insertCourse(Course course);
-    List<Student> findAllStudent();
-    List<Course> findAllCourse();
+
+    List<Student> findAllStudents();
+
+    List<Course> findAllCourses();
 }
