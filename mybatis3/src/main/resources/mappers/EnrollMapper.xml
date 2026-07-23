@@ -15,10 +15,10 @@
         VALUES
         (#{name})
     </insert>
-    <select id="findAllStudents" resultType="org.example.mybatis3.model.Student">
+    <select id="findAllStudents" resultType="org.example.mybatis3.entity.Student">
         SELECT * FROM STUDENTS
     </select>
-    <select id="findAllCourses" resultType="org.example.mybatis3.model.Course">
+    <select id="findAllCourses" resultType="org.example.mybatis3.entity.Course">
         SELECT * FROM COURSES
     </select>
 </mapper>
