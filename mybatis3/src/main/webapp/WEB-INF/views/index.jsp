@@ -26,6 +26,13 @@
     </form>
 </section>
 <section>
+    <form method="post" action="/enrollments">
+        <input name="student_id" type="number" placeholder="학생번호">
+        <input name="course_id" type="number" placeholder="과목번호">
+        <button>생성</button>
+    </form>
+</section>
+<section>
     <c:forEach items="${students}" var="student">
         <p>${student}</p>
     </c:forEach>
@@ -35,6 +42,15 @@
         <p>${course}</p>
     </c:forEach>
 </section>
+<section>
+    <c:forEach items="${studentWithCourses}" var="student">
+        <p>${student}</p>
+    </c:forEach>
+</section>
+<section>
+    <c:forEach items="${courseWithStudents}" var="course">
+        <p>${course}</p>
+    </c:forEach>
+</section>
 </body>
-</html>
 </html>
