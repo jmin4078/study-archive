@@ -13,5 +13,28 @@
 </head>
 <body>
 <h1>MyBatis</h1>
+<section>
+    <form method="post" action="/students">
+        <input name="name" placeholder="학생이름">
+        <button>생성</button>
+    </form>
+</section>
+<section>
+    <form method="post" action="/courses">
+        <input name="name" placeholder="과목이름">
+        <button>생성</button>
+    </form>
+</section>
+<section>
+    <c:forEach items="${students}" var="student">
+        <p>${student}</p>
+    </c:forEach>
+</section>
+<section>
+    <c:forEach items="${courses}" var="course">
+        <p>${course}</p>
+    </c:forEach>
+</section>
 </body>
+</html>
 </html>
