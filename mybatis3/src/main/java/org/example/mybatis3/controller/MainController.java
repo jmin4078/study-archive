@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping
@@ -20,6 +21,8 @@ public class MainController {
     public String index(Model model) {
         model.addAttribute("students", enrollService.findAllStudents());
         model.addAttribute("courses", enrollService.findAllCourses());
+        model.addAttribute("studentWithCourses", enrollService.findAllStudentsWithCourses());
+        model.addAttribute("courseWithStudents", enrollService.findAllCoursesWithStudents());
         return "index";
     }
 
@@ -32,6 +35,16 @@ public class MainController {
     @PostMapping("/courses")
     public String addCourse(@ModelAttribute Course course) {
         enrollService.createCourse(course);
+        return "redirect:/";
+    }
+
+    @PostMapping("/enrollments")
+    public String addEnrollment(@RequestParam Long studentId, @RequestParam Long courseId) {
+        Student student = new Student();
+        student.setId(studentId);
+        Course course = new Course();
+        course.setId(courseId);
+        enrollService.createEnrollment(student, course);
         return "redirect:/";
     }
 }
