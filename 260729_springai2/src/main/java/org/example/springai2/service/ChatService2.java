@@ -1,7 +1,7 @@
 package org.example.springai2.service;
 
-import lombok.RequiredArgsConstructor;
 import org.example.springai2.dto.ChatDTO;
+import org.example.springai2.repository.MyBatisChatMemoryRepository;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.messages.Message;
@@ -13,12 +13,18 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-@RequiredArgsConstructor
 public class ChatService2 {
-    @Qualifier("inMemoryChatClient") // @RequiredArgsConstructor <- lombok.config
     private final ChatClient chatClient;
-    @Qualifier("inMemoryChatMemory")
-    private final ChatMemory chatMemory;
+    //    @Qualifier("inMemoryChatMemory")
+//    private final ChatMemory chatMemory;
+    private final MyBatisChatMemoryRepository chatMemoryRepository;
+
+    public ChatService2(
+            @Qualifier("mybatisChatClient") ChatClient chatClient,
+            MyBatisChatMemoryRepository chatMemoryRepository) {
+        this.chatClient = chatClient;
+        this.chatMemoryRepository = chatMemoryRepository;
+    }
 
     public String chat(ChatDTO dto) {
         return chatClient.prompt().system("친절하게 50자 이내로 한글로 대답")
@@ -31,6 +37,7 @@ public class ChatService2 {
 
     // org.springframework.ai.chat.messages.Message;
     public List<Message> getHistory(String conversationId) {
-        return chatMemory.get(conversationId);
+//        return chatMemory.get(conversationId);
+        return chatMemoryRepository.findByConversationId(conversationId);
     }
 }
