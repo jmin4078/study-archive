@@ -1,7 +1,7 @@
 package org.example.springai2.service;
 
 import org.example.springai2.dto.ChatDTO;
-import org.example.springai2.repository.MyBatisChatMemoryRepository;
+import org.example.springai2.repository.JpaChatMemoryRepository;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.messages.Message;
@@ -15,13 +15,11 @@ import java.util.Map;
 @Service
 public class ChatService2 {
     private final ChatClient chatClient;
-    //    @Qualifier("inMemoryChatMemory")
-//    private final ChatMemory chatMemory;
-    private final MyBatisChatMemoryRepository chatMemoryRepository;
+    private final JpaChatMemoryRepository chatMemoryRepository;
 
     public ChatService2(
-            @Qualifier("mybatisChatClient") ChatClient chatClient,
-            MyBatisChatMemoryRepository chatMemoryRepository) {
+            @Qualifier("jpaChatClient") ChatClient chatClient,
+            JpaChatMemoryRepository chatMemoryRepository) {
         this.chatClient = chatClient;
         this.chatMemoryRepository = chatMemoryRepository;
     }
@@ -37,7 +35,6 @@ public class ChatService2 {
 
     // org.springframework.ai.chat.messages.Message;
     public List<Message> getHistory(String conversationId) {
-//        return chatMemory.get(conversationId);
         return chatMemoryRepository.findByConversationId(conversationId);
     }
 }
