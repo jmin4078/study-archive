@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>기가박스에 오신 걸 환영합니다</title>
+</head>
+<body>
+<h1>GIGABOX</h1>
+<a href="/">메인으로</a>
+<a href="/movies">영화 목록</a>
+<a href="/movies/new">영화 등록</a>
+<section>
+    <form
+            th:method="post"
+            th:action="@{/movies/new}"
+            th:object="${movie}"
+    >
+        <label>제목 : <input th:field="*{title}"></label><br>
+        <label>가격 : <input th:field="*{price}" type="number"></label><br>
+        <button>등록</button>
+    </form>
+</section>
+</body>
+</html>
