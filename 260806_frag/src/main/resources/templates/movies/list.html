@@ -14,7 +14,9 @@
 <a href="/movies/new">영화 등록</a>
 <section>
     <div th:each="movie : ${movies}">
-        [[${movie}]]
+        <!--        [[${movie}]]-->
+        <p th:text="${movie.title}"></p>
+        <a th:href="@{/movies/{id}(id=${movie.id})}">자세히보기</a>
     </div>
 </section>
 </body>
