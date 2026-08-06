@@ -41,10 +41,33 @@ public class MovieController {
         movieService.insert(movieFormDTO.toEntity());
         return "redirect:/movies";
     }
+
     @GetMapping("/{id}")
-    public String editMovie(@PathVariable Long id, Model model) {
+    public String findMovie(@PathVariable Long id, Model model) {
         model.addAttribute("movie", MovieViewDTO.fromDTO(movieService.findById(id)));
         return "movies/detail";
     }
 
+    @GetMapping("/{id}/edit")
+    public String editMovie(@PathVariable Long id, Model model) {
+        // 결과적으로 어차피 title, price가 있기 때문에 굳이 FormDTO로 안해도 ViewDTO로 파싱 가능
+        model.addAttribute("movie", MovieViewDTO.fromDTO(movieService.findById(id)));
+        model.addAttribute("movieId", id);
+        return "movies/new";
+    }
+
+    @PostMapping("/{id}/edit")
+    public String updateMovie(
+            @PathVariable Long id,
+            @Validated @ModelAttribute("movie") MovieFormDTO movieFormDTO,
+            BindingResult bindingResult,
+            Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("movieId", id);
+            return "movies/new";
+        }
+        movieService.update(movieFormDTO.toEntity(id));
+//        return "redirect:/movies";
+        return "redirect:/movies/%d".formatted(id);
+    }
 }
