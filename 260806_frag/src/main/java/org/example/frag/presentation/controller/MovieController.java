@@ -70,4 +70,11 @@ public class MovieController {
 //        return "redirect:/movies";
         return "redirect:/movies/%d".formatted(id);
     }
+    @PostMapping("/{id}/delete")
+    public String deleteMovie(
+            @PathVariable Long id
+    ) {
+        movieService.delete(id);
+        return "redirect:/movies";
+    }
 }
