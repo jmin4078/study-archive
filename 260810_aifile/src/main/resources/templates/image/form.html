@@ -15,11 +15,28 @@
         <input type="file" name="file" accept="image/*" required>
         <button>Image 업로드</button>
     </form>
+    <div th:if="${imageUrl}">
+        <h2>업로드한 이미지</h2>
+        <img th:src="${imageUrl}" alt="업로드한 이미지" style="max-width: 512px; max-height: 512px;">
+    </div>
     <p>[[${answer}]]</p>
     <!--    <form th:action="@{/pdf/rag}" method="post">-->
     <!--        <input type="text" name="query" placeholder="질문을 입력하세요">-->
     <!--        <button>질문하기</button>-->
     <!--    </form>-->
+    <form th:action="@{/image/search}" method="post">
+        <input type="text" name="query" placeholder="질문을 입력하세요">
+        <button>질문하기</button>
+    </form>
+    <div th:if="${results}">
+        <h2>검색 결과</h2>
+        <article th:each="result : ${results}">
+            <img th:src="${result.publicUrl}"
+                 alt="검색된 이미지"
+                 style="max-width: 512px; max-height: 512px;">
+            <p th:text="${result.caption}"></p>
+        </article>
+    </div>
 </section>
 </body>
 </html>

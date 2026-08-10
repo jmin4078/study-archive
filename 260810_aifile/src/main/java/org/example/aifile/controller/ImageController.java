@@ -1,6 +1,7 @@
 package org.example.aifile.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.example.aifile.dto.ImageUploadResult;
 import org.example.aifile.service.ImageService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,8 +30,16 @@ public class ImageController {
         System.out.println(file.getContentType());
         System.out.println(file.getOriginalFilename());
         redirectAttributes.addFlashAttribute("msg", "파일 업로드 완료");
-        String answer = imageService.explain(file);
-        redirectAttributes.addFlashAttribute("answer", answer);
+        ImageUploadResult result = imageService.explain(file);
+        redirectAttributes.addFlashAttribute("answer", result.caption());
+        redirectAttributes.addFlashAttribute("imageUrl", result.publicUrl());
+        return "redirect:/image";
+    }
+    @PostMapping("/search")
+    public String search(@RequestParam String query,
+                         RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("results",
+                imageService.imageRagSearch(query));
         return "redirect:/image";
     }
 }

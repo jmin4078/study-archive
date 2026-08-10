@@ -2,11 +2,15 @@ package org.example.aifile.service;
 
 import io.awspring.cloud.s3.S3Resource;
 import io.awspring.cloud.s3.S3Template;
+import org.example.aifile.dto.ImageUploadResult;
 import net.coobird.thumbnailator.Thumbnails;
+import org.example.aifile.dto.ImageRagSearchResult;
+import org.jspecify.annotations.Nullable;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.content.Media;
 import org.springframework.ai.document.Document;
+import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.ByteArrayResource;
@@ -34,7 +38,7 @@ public class ImageService {
         this.s3Template = s3Template;
     }
 
-    public String explain(MultipartFile file) {
+    public ImageUploadResult explain(MultipartFile file) {
         ChatClient chatClient = ChatClient.builder(chatModel)
                 .defaultSystem("너는 이미지를 해석하는 역할이야. 이미지의 특징적인 부분을 설명해줘")
                 .build();
@@ -74,7 +78,7 @@ public class ImageService {
 //                            .text("첨부한 이미지를 해석해주세요")
 //                            .media(media)).call().content();
             imageVectorStore.add(List.of(document));
-            return caption;
+            return new ImageUploadResult(caption, publicUrl);
         } catch (Exception e) {
             throw new IllegalArgumentException(e);
         }
@@ -91,5 +95,22 @@ public class ImageService {
             throw new IllegalArgumentException(e);
         }
         return outputStream.toByteArray();
+    }
+
+    public List<ImageRagSearchResult> imageRagSearch(String query) {
+        SearchRequest request = SearchRequest.builder()
+                .query(query)
+                .topK(3)
+                .similarityThreshold(0.5)
+//                .filterExpression()
+                .build();
+        List<Document> results = imageVectorStore.similaritySearch(request);
+        return results.stream().map(
+                d -> {
+                    Object caption = d.getMetadata().get("caption");
+                    Object publicUrl = d.getMetadata().get("publicUrl");
+                    return new ImageRagSearchResult(caption.toString(), publicUrl.toString());
+                }
+        ).toList();
     }
 }
