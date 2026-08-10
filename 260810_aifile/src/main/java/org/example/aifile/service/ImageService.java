@@ -1,5 +1,7 @@
 package org.example.aifile.service;
 
+import io.awspring.cloud.s3.S3Resource;
+import io.awspring.cloud.s3.S3Template;
 import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.model.ChatModel;
@@ -20,11 +22,15 @@ import java.util.List;
 public class ImageService {
     private final ChatModel chatModel;
     private final VectorStore imageVectorStore;
+    // Supabase Storage
+    private final S3Template s3Template;
 
     public ImageService(@Qualifier("googleGenAiChatModel") ChatModel chatModel,
-                        @Qualifier("imageVectorStore") VectorStore imageVectorStore) {
+                        @Qualifier("imageVectorStore") VectorStore imageVectorStore,
+                        S3Template s3Template) {
         this.chatModel = chatModel;
         this.imageVectorStore = imageVectorStore;
+        this.s3Template = s3Template;
     }
 
     public String explain(MultipartFile file) {
@@ -32,6 +38,8 @@ public class ImageService {
                 .defaultSystem("너는 이미지를 해석하는 역할이야. 이미지의 특징적인 부분을 설명해줘")
                 .build();
         try {
+            S3Resource result = s3Template.upload("rag", file.getOriginalFilename(), file.getInputStream());
+            System.out.println("result = " + result.getURL());
             byte[] resized = resize(file.getInputStream(),
                     file.getContentType().split("/")[1]
                     , 512, 512);

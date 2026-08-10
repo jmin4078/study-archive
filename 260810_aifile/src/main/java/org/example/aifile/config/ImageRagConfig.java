@@ -29,5 +29,4 @@ public class ImageRagConfig {
                 .initializeSchema(true) // ConfigurationProperties로 받아야하는 값
                 .build();
     }
-
 }
