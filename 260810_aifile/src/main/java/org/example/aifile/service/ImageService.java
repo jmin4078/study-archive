@@ -1,11 +1,9 @@
 package org.example.aifile.service;
 
-import lombok.RequiredArgsConstructor;
 import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.content.Media;
-import org.springframework.ai.embedding.EmbeddingModel;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.stereotype.Service;
@@ -16,12 +14,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 
 @Service
-@RequiredArgsConstructor
 public class ImageService {
-    @Qualifier("googleGenAiChatModel")
     private final ChatModel chatModel;
-    @Qualifier("openAiEmbeddingModel")
-    private final EmbeddingModel embeddingModel;
+
+    public ImageService(@Qualifier("googleGenAiChatModel") ChatModel chatModel) {
+        this.chatModel = chatModel;
+    }
 
     public String explain(MultipartFile file) {
         ChatClient chatClient = ChatClient.builder(chatModel)

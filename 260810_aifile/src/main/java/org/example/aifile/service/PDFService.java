@@ -1,6 +1,5 @@
 package org.example.aifile.service;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.vectorstore.QuestionAnswerAdvisor;
 import org.springframework.ai.chat.model.ChatModel;
@@ -22,11 +21,15 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class PDFService {
     private final PgVectorStore vectorStore;
-    @Qualifier("googleGenAiChatModel")
     private final ChatModel chatModel;
+
+    public PDFService(PgVectorStore vectorStore,
+                      @Qualifier("googleGenAiChatModel") ChatModel chatModel) {
+        this.vectorStore = vectorStore;
+        this.chatModel = chatModel;
+    }
 
     public String ragChat(String query) {
         ChatClient chatClient = ChatClient
