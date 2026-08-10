@@ -1,11 +1,12 @@
 package org.example.aifile.service;
 
-
 import lombok.RequiredArgsConstructor;
 import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.content.Media;
+import org.springframework.ai.embedding.EmbeddingModel;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MimeTypeUtils;
@@ -17,7 +18,10 @@ import java.io.InputStream;
 @Service
 @RequiredArgsConstructor
 public class ImageService {
+    @Qualifier("googleGenAiChatModel")
     private final ChatModel chatModel;
+    @Qualifier("openAiEmbeddingModel")
+    private final EmbeddingModel embeddingModel;
 
     public String explain(MultipartFile file) {
         ChatClient chatClient = ChatClient.builder(chatModel)
@@ -31,7 +35,9 @@ public class ImageService {
                     MimeTypeUtils.parseMimeType(file.getContentType()),
                     new ByteArrayResource(resized));
             return chatClient.prompt()
-                    .user(u -> u.media(media)).call().content();
+                    .user(u -> u
+                            .text("첨부한 이미지를 해석해주세요")
+                            .media(media)).call().content();
         } catch (Exception e) {
             throw new IllegalArgumentException(e);
         }
