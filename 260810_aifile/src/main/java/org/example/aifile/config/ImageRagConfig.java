@@ -19,14 +19,15 @@ public class ImageRagConfig {
 
     @Bean
     public VectorStore imageVectorStore(JdbcTemplate jdbcTemplate,
-                                        @Qualifier("openAiEmbeddingModel") EmbeddingModel embeddingModel) {
+//                                        @Qualifier("openAiEmbeddingModel") EmbeddingModel embeddingModel,
+                                        EmbeddingModel embeddingModel) {
         return PgVectorStore.builder(jdbcTemplate, embeddingModel)
                 .vectorTableName("image_vector_store")
-
                 .dimensions(1536)
                 .distanceType(PgVectorStore.PgDistanceType.COSINE_DISTANCE)
                 .indexType(PgVectorStore.PgIndexType.HNSW)
                 .initializeSchema(true) // ConfigurationProperties로 받아야하는 값
                 .build();
     }
+
 }

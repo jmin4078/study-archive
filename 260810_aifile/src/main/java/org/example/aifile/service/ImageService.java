@@ -4,6 +4,8 @@ import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.content.Media;
+import org.springframework.ai.document.Document;
+import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.stereotype.Service;
@@ -12,13 +14,17 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.util.List;
 
 @Service
 public class ImageService {
     private final ChatModel chatModel;
+    private final VectorStore imageVectorStore;
 
-    public ImageService(@Qualifier("googleGenAiChatModel") ChatModel chatModel) {
+    public ImageService(@Qualifier("googleGenAiChatModel") ChatModel chatModel,
+                        @Qualifier("imageVectorStore") VectorStore imageVectorStore) {
         this.chatModel = chatModel;
+        this.imageVectorStore = imageVectorStore;
     }
 
     public String explain(MultipartFile file) {
@@ -32,10 +38,23 @@ public class ImageService {
             Media media = new Media(
                     MimeTypeUtils.parseMimeType(file.getContentType()),
                     new ByteArrayResource(resized));
-            return chatClient.prompt()
+            // doc
+            // import org.springframework.ai.document.Document;
+            String caption = chatClient.prompt()
                     .user(u -> u
                             .text("첨부한 이미지를 해석해주세요")
                             .media(media)).call().content();
+            Document document = Document.builder()
+//                    .media(media)
+                    .text(caption)
+                    .metadata("caption", caption)
+                    .build();
+//            return chatClient.prompt()
+//                    .user(u -> u
+//                            .text("첨부한 이미지를 해석해주세요")
+//                            .media(media)).call().content();
+            imageVectorStore.add(List.of(document));
+            return caption;
         } catch (Exception e) {
             throw new IllegalArgumentException(e);
         }
