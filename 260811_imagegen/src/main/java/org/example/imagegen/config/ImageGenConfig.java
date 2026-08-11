@@ -19,13 +19,15 @@ public class ImageGenConfig {
         return ChatClient.builder(model)
                 .defaultSystem(
                         """
-                            - 전달받은 내용을 500자 이내의 영문으로 된 이미지 생성용 프롬프트로 개선
-                            - 특징이 잘 드러나게 자세하지만 간결한 표현으로 구성
-                            """)
+                                - 전달받은 내용을 500자 이내의 영문으로 된 이미지 생성용 프롬프트로 개선
+                                - 특징이 잘 드러나게 자세하지만 간결한 표현으로 구성
+                                """)
                 .defaultOptions(ChatOptions.builder()
+                        .temperature(0.3)
                         .maxTokens(1000))
                 .build();
     }
+
     @Bean
     RestClient cfWorkersAiClient(RestClient.Builder b, CFProperty p) {
         HttpClientSettings settings = HttpClientSettings.defaults()
