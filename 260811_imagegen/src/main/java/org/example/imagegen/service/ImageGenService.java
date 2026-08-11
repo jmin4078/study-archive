@@ -8,6 +8,7 @@ import org.example.imagegen.dto.GenResultDTO;
 import org.example.imagegen.dto.ImageResultDTO;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
@@ -50,9 +51,15 @@ public class ImageGenService {
         ObjectMetadata metadata = ObjectMetadata.builder()
                 .contentType(MediaType.IMAGE_JPEG_VALUE)
                 .build();
+        System.out.println("bucket = " + bucket);
+        System.out.println("filename = " + filename);
         s3Template.upload(bucket, filename,
                 data, metadata);
         return filename; // 호출 시 Key 값 filename만 return
+    }
+
+    public Resource download(String filename) {
+        return s3Template.download(bucket, filename);
     }
 
     private final ChatClient promptImproveClient;
