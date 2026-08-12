@@ -4,4 +4,5 @@ import org.example.sec_crud.domain.entity.UserAccountEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserAccountJpaRepository extends JpaRepository<UserAccountEntity, Long> {
+    boolean existsByUsername(String username);
 }
