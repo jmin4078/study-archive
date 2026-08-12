@@ -36,6 +36,10 @@ public class SecurityConfig {
                 .requestMatchers("/", "/error/**").permitAll()
                 .requestMatchers("/user/join").permitAll()
                 .anyRequest().authenticated() // 모든 요청에 대해서 인증 없이 접근 불허
+        ).formLogin(form -> form
+                        .loginPage("/user/login").permitAll()
+                        .loginProcessingUrl("/user/login").permitAll()
+                // 나머지는 기본값으로
         );
         return http.build();
     }
