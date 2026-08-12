@@ -3,13 +3,33 @@ package org.example.sec_crud.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+
+import java.util.Map;
 
 @Configuration
 public class SecurityConfig {
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+//        String encodingId = "bcrypt";
+        String encodingId = "argon2";
+        // bcrypt
+        // https://github.com/aibe-7th/04_server_sec2/blob/main/docs/03-password-encoder.md
+        Map<String, PasswordEncoder> encoders = Map.of(
+                "bcrypt", new BCryptPasswordEncoder(),
+                "scrypt", SCryptPasswordEncoder.defaultsForSpringSecurity_v5_8(),
+                "argon2", Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8()
+        );
+//        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        return new DelegatingPasswordEncoder(encodingId, encoders);
+    }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) {
         http.authorizeHttpRequests(auth -> auth
@@ -18,11 +38,5 @@ public class SecurityConfig {
                 .anyRequest().authenticated() // 모든 요청에 대해서 인증 없이 접근 불허
         );
         return http.build();
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        // bcrypt
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 }
