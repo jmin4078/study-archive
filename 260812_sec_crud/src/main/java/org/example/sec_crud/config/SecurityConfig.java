@@ -26,6 +26,7 @@ public class SecurityConfig {
                 "scrypt", SCryptPasswordEncoder.defaultsForSpringSecurity_v5_8(),
                 "argon2", Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8()
         );
+        // Spring Security 5.8 기준 패러미터 -> 권장 패러미터를 써서 보안처리
 //        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
         return new DelegatingPasswordEncoder(encodingId, encoders);
     }

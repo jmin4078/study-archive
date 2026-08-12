@@ -24,6 +24,7 @@ public class UserAccountController {
         model.addAttribute("form", new UserLoginFormDTO("", ""));
         return "user/login";
     }
+
     @GetMapping("/join")
     public String join(Model model) {
         model.addAttribute("form", new UserJoinFormDTO("", ""));
