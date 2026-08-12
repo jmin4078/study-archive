@@ -28,6 +28,7 @@ public class UserAccountController {
         model.addAttribute("form", new UserJoinFormDTO("", ""));
         return "user/join";
     }
+
     @PostMapping("/join")
     public String join(
             @Validated @ModelAttribute("form") UserJoinFormDTO form,
