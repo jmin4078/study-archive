@@ -2,7 +2,7 @@ spring:
   application:
     name: rest-sec
   profiles:
-    active: dev
+    active: dev,jwt
   # jpa
   datasource:
     url: jdbc:postgresql://${PGHOST}:5432/${PGDATABASE}
@@ -23,3 +23,11 @@ spring:
   # 타임리프
   thymeleaf:
     cache: false
+  # 스키마 자동반영
+  jpa:
+    hibernate:
+      ddl-auto: update
+# jwt 등의 인증정보를 받은다음 입력해면 새로고침 후에도 유지
+springdoc:
+  swagger-ui:
+    persist-authorization: true
