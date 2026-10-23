@@ -1,0 +1,54 @@
+package org.example.springai2.controller;
+
+import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
+import org.example.springai2.dto.ChatDTO;
+import org.example.springai2.service.ChatService2;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+@Controller
+@RequestMapping
+@RequiredArgsConstructor
+public class MainController {
+    //    private final ChatService chatService;
+    private final ChatService2 chatService;
+
+    @GetMapping
+    public String index(Model model, HttpSession session) {
+        model.addAttribute("history", chatService.getHistory(session.getId()));
+        return "index";
+    }
+
+    @PostMapping
+    public String chat2(ChatDTO dto,
+                        RedirectAttributes redirectAttributes,
+                        HttpSession session) {
+        String result = chatService.chat(dto.withID(session.getId()));
+        redirectAttributes.addFlashAttribute("result", result);
+        return "redirect:/";
+    }
+
+    //    @PostMapping
+//    public String chat(ChatDTO dto,
+//                       RedirectAttributes redirectAttributes) {
+//        String result = chatService.chat(dto);
+//        FoodDTO result = chatService.recommendFood(dto);
+//        List<String> result = chatService.recommendFood2(dto);
+//        Map<String, Object> result = chatService.recommendFood3(dto);
+//        redirectAttributes.addFlashAttribute("result", result);
+//        redirectAttributes.addFlashAttribute("result", List.of(
+//                chatService.recommendFood(dto),
+//                chatService.recommendFood2(dto),
+//                chatService.recommendFood3(dto)
+//        ));
+//        FoodDTO result = chatService.manual(dto);
+//        String result = chatService.chat2(dto);
+//        redirectAttributes.addFlashAttribute("result", result);
+//        return "redirect:/";
+//    }
+}
