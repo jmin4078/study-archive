@@ -1,0 +1,38 @@
+spring:
+  ai:
+    model:
+      chat: google-genai
+    google:
+      genai:
+        api-key: ${GEMINI_API_KEY:empty}
+        embedding:
+          api-key: ${GEMINI_API_KEY:empty}
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+  ai:
+    openai:
+      api-key: ${GEMINI_API_KEY:empty}
+      embedding:
+        base-url: https://generativelanguage.googleapis.com/v1beta/openai
+        model: gemini-embedding-2
+    google:
+      genai:
+        chat:
+          # 500? gemma-4
+          model: gemini-3.5-flash-lite
+          # model: gemini-3.1-flash-lite
+        embedding:
+          text:
+            model: gemini-embedding-001
+            dimensions: 1536
+    vectorstore:
+      pgvector:
+        dimensions: 1536
+        table-name: vector_store
+        initialize-schema: true
+        # 나머지는 default
+        # index-type: HNSW
+        # distance-type: COSINE_DISTANCE

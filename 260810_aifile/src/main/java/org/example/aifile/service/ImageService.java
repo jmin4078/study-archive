@@ -1,0 +1,116 @@
+package org.example.aifile.service;
+
+import io.awspring.cloud.s3.S3Resource;
+import io.awspring.cloud.s3.S3Template;
+import org.example.aifile.dto.ImageUploadResult;
+import net.coobird.thumbnailator.Thumbnails;
+import org.example.aifile.dto.ImageRagSearchResult;
+import org.jspecify.annotations.Nullable;
+import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.model.ChatModel;
+import org.springframework.ai.content.Media;
+import org.springframework.ai.document.Document;
+import org.springframework.ai.vectorstore.SearchRequest;
+import org.springframework.ai.vectorstore.VectorStore;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.stereotype.Service;
+import org.springframework.util.MimeTypeUtils;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.util.List;
+
+@Service
+public class ImageService {
+    private final ChatModel chatModel;
+    private final VectorStore imageVectorStore;
+    // Supabase Storage
+    private final S3Template s3Template;
+
+    public ImageService(@Qualifier("googleGenAiChatModel") ChatModel chatModel,
+                        @Qualifier("imageVectorStore") VectorStore imageVectorStore,
+                        S3Template s3Template) {
+        this.chatModel = chatModel;
+        this.imageVectorStore = imageVectorStore;
+        this.s3Template = s3Template;
+    }
+
+    public ImageUploadResult explain(MultipartFile file) {
+        ChatClient chatClient = ChatClient.builder(chatModel)
+                .defaultSystem("너는 이미지를 해석하는 역할이야. 이미지의 특징적인 부분을 설명해줘")
+                .build();
+        try {
+            String uuid = java.util.UUID.randomUUID().toString();
+            String extension = StringUtils.getFilenameExtension(file.getOriginalFilename());
+            String newFilename = uuid + "." + extension;
+            S3Resource result = s3Template.upload("rag", newFilename, file.getInputStream());
+            // https://wcjfoevpwelyqclvpshz.storage.supabase.co/storage/v1/s3/rag/movie.jpg
+            // https://wcjfoevpwelyqclvpshz.supabase.co/storage/v1/object/public/rag/movie.jpg
+            // storage.supabase.co/storage/v1/s3 -> supabase.co/storage/v1/object/public
+            System.out.println("result = " + result.getURL());
+            String publicUrl = result.getURL().toString()
+                    .replace("storage.supabase.co/storage/v1/s3",
+                            "supabase.co/storage/v1/object/public");
+            System.out.println("publicUrl = " + publicUrl);
+            byte[] resized = resize(file.getInputStream(),
+                    file.getContentType().split("/")[1]
+                    , 512, 512);
+            Media media = new Media(
+                    MimeTypeUtils.parseMimeType(file.getContentType()),
+                    new ByteArrayResource(resized));
+            // doc
+            // import org.springframework.ai.document.Document;
+            String caption = chatClient.prompt()
+                    .user(u -> u
+                            .text("첨부한 이미지를 해석해주세요")
+                            .media(media)).call().content();
+            Document document = Document.builder()
+//                    .media(media)
+                    .text(caption)
+                    .metadata("caption", caption)
+                    .metadata("publicUrl", publicUrl)
+                    .build();
+//            return chatClient.prompt()
+//                    .user(u -> u
+//                            .text("첨부한 이미지를 해석해주세요")
+//                            .media(media)).call().content();
+            imageVectorStore.add(List.of(document));
+            return new ImageUploadResult(caption, publicUrl);
+        } catch (Exception e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+
+    public byte[] resize(InputStream inputStream, String format, int width, int height) {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        try {
+            Thumbnails.of(inputStream)
+                    .size(width, height)
+                    .outputFormat(format)
+                    .toOutputStream(outputStream);
+        } catch (Exception e) {
+            throw new IllegalArgumentException(e);
+        }
+        return outputStream.toByteArray();
+    }
+
+    public List<ImageRagSearchResult> imageRagSearch(String query) {
+        SearchRequest request = SearchRequest.builder()
+                .query(query)
+                .topK(3)
+                .similarityThreshold(0.5)
+//                .filterExpression()
+                .build();
+        List<Document> results = imageVectorStore.similaritySearch(request);
+        return results.stream().map(
+                d -> {
+                    Object caption = d.getMetadata().get("caption");
+                    Object publicUrl = d.getMetadata().get("publicUrl");
+                    return new ImageRagSearchResult(caption.toString(), publicUrl.toString());
+                }
+        ).toList();
+    }
+}

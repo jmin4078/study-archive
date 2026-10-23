@@ -1,0 +1,19 @@
+spring:
+  cloud:
+    aws:
+      s3:
+        path-style-access-enabled: true
+        endpoint: ${SUPABASE_STORAGE_ENDPOINT}
+        region: ${SUPABASE_STORAGE_REGION}
+      credentials:
+        access-key: ${SUPABASE_STORAGE_ACCESS_KEY}
+        secret-key: ${SUPABASE_STORAGE_SECRET_KEY}
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 20MB
