@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: secu
+  profiles:
+    active: dev,db,kakao
+app:
+  security:
+    encoding-id: argon2
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+    import: optional:file:.env.dev[.properties]
+  thymeleaf:
+    cache: false
+  security:
+    user:
+      name: user
+      # 자동생성된 것을 콘솔에서 확인하기 번거로우므로 테스트용으로
+      password: password
