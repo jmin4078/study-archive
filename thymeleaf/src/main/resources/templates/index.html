@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Hello Thymeleaf</title>
+</head>
+<body>
+<!--    <h1>Hello Thymeleaf</h1>-->
+<h1 th:text="#{page.headline}"></h1>
+<p th:text="${msg}">메시지</p>
+<!--    <p th:text="${msg2}">메시지2</p>-->
+<p>[[${msg2}]]</p>
+<section>
+    <form th:method="post">
+        <label>
+            이름 : <input th:name="name">
+        </label>
+        <label>
+            가격 : <input th:name="price">
+        </label>
+        <button>생성</button>
+    </form>
+</section>
+<section>
+    <!--    HTML 주석    -->
+    <!--/*    타임리프 주석    */-->
+    <!--        <p th:each="pizza : ${pizzas}">-->
+    <!--        2번째 위치는 상태 관련 변수를 받아올 수 있음 -->
+    <div th:each="pizza, status : ${pizzas}">
+        <!--            [[${pizza}]] / [[${pizza.name}]] / [[${pizza.price}]]-->
+        <code th:text="${pizza.name}"></code>
+        <code th:text="${pizza.price}"></code>
+        <li th:text="${status.count}"></li>
+        <li th:text="${status.index}"></li>
+        <li th:text="${status.first}"></li>
+        <li th:text="${status.last}"></li>
+        <mark th:if="${status.first}">첫번째입니다</mark>
+        <mark th:unless="${status.first}">첫번째가 아닙니다</mark>
+        <mark th:if="${status.last}">마지막입니다</mark>
+        <mark th:unless="${status.last}">마지막이 아닙니다</mark>
+        <section th:switch="${status.count}">
+            <p th:case="1">첫번째</p>
+            <p th:case="2">두번째</p>
+            <p th:case="*">잘모르겠음</p>
+        </section>
+        <mark th:if="${pizza.price >= 10000}">비싸다</mark>
+    </div>
+</section>
+<section>
+    <p th:text="${data}"></p>
+    <p>[[${data}]]</p>
+    <!--        <p th:utext="${data}"></p>-->
+    <!--        <p>[(${data})]</p>-->
+</section>
+<section>
+    <!--        <form action="/login">-->
+    <form th:action="@{/login}">
+    </form>
+    <form th:action="@{/login/{id}(id=${msg})}">
+    </form>
+    <form th:action="@{/login(pass=1234)}">
+    </form>
+</section>
+</body>
+</html>
