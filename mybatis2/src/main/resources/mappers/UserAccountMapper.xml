@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.mybatis2.mapper.UserAccountMapper">
+    <insert id="create" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO USERS
+        (name, email, age, city)
+        VALUES
+        (#{name}, #{email}, #{age}, #{city})
+    </insert>
+    <!--  SELECT id, ... FROM USERS  -->
+    <select id="findAll" resultType="org.example.mybatis2.entity.UserAccount">
+        SELECT * FROM USERS
+    </select>
+    <!--  IF  -->
+    <!--    <select id="search" resultType="org.example.mybatis2.entity.UserAccount">-->
+    <!--        SELECT *-->
+    <!--        FROM USERS-->
+    <!--        WHERE-->
+    <!--            &#45;&#45; 패러미터 주입으로 넣으려고 하면 CONCAT 문자열 결합을 해줘야함-->
+    <!--            name LIKE CONCAT('%', #{name}, '%')-->
+    <!--            AND city LIKE CONCAT('%', #{city}, '%')-->
+    <!--            AND age >= #{minAge}-->
+    <!--    </select>-->
+    <select id="search" resultType="org.example.mybatis2.entity.UserAccount">
+        SELECT *
+        FROM USERS
+        <where>
+            <if test="name != null">
+                AND name LIKE CONCAT('%', #{name}, '%')
+            </if>
+            <if test="city != null">
+                AND city LIKE CONCAT('%', #{city}, '%')
+            </if>
+            <if test="minAge != null">
+                AND age >= #{minAge}
+            </if>
+        </where>
+    </select>
+    <!--  step2-2  -->
+    <select id="findById" resultType="org.example.mybatis2.entity.UserAccount">
+        SELECT * FROM USERS WHERE id = #{id}
+    </select>
+    <!--    <update id="update">-->
+    <!--        UPDATE USERS-->
+    <!--        SET name = #{name},-->
+    <!--            email = #{email},-->
+    <!--            age = #{age},-->
+    <!--            city = #{city}-->
+    <!--        WHERE id = #{id}-->
+    <!--    </update>-->
+    <update id="update">
+        UPDATE USERS
+        <set>
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="email != null and email != ''">email = #{email},</if>
+            <if test="age != null">age = #{age},</if>
+            <if test="city != null and city != ''">city = #{city},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+    <!--  step2-3  -->
+    <select id="findAllSorted" resultType="org.example.mybatis2.entity.UserAccount">
+        SELECT * FROM USERS
+        ORDER BY
+        <choose>
+            <when test="sort == 'name'">name</when>
+            <when test="sort == 'email'">email</when>
+            <when test="sort == 'age'">age</when>
+            <when test="sort == 'city'">city</when>
+            <otherwise>id</otherwise>
+        </choose>
+    </select>
+    <delete id="deleteByIds">
+        DELETE FROM USERS WHERE id IN
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+        <!--    (1, 2, 3, ...)    -->
+    </delete>
+</mapper>

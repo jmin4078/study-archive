@@ -1,0 +1,55 @@
+-- 주문 -> 회원 (N:1) - 주문 입장에서 1 연결
+CREATE TABLE IF NOT EXISTS MEMBERS
+(
+    id    BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name  VARCHAR(50)  NOT NULL,
+    email VARCHAR(100) NOT NULL
+    );
+
+CREATE TABLE IF NOT EXISTS ORDERS
+(
+    id           BIGINT AUTO_INCREMENT PRIMARY KEY,
+    member_id    BIGINT       NOT NULL,
+    product_name VARCHAR(200) NOT NULL,
+    order_date   DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_orders_member FOREIGN KEY (member_id) REFERENCES MEMBERS (id)
+    );
+-- collection Board - Comments
+CREATE TABLE IF NOT EXISTS BOARDS
+(
+    id      BIGINT AUTO_INCREMENT PRIMARY KEY,
+    title   VARCHAR(200)  NOT NULL,
+    content VARCHAR(2000) NOT NULL,
+    writer  VARCHAR(50)   NOT NULL
+    );
+
+CREATE TABLE IF NOT EXISTS COMMENTS
+(
+    id         BIGINT AUTO_INCREMENT PRIMARY KEY,
+    board_id   BIGINT       NOT NULL,
+    writer     VARCHAR(50)  NOT NULL,
+    content    VARCHAR(500) NOT NULL,
+    created_at DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_comments_board FOREIGN KEY (board_id) REFERENCES BOARDS (id)
+    );
+-- N:M 학생-수강신청-강좌
+CREATE TABLE IF NOT EXISTS STUDENTS
+(
+    id   BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(50) NOT NULL
+    );
+
+CREATE TABLE IF NOT EXISTS COURSES
+(
+    id   BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL
+    );
+
+CREATE TABLE IF NOT EXISTS ENROLLMENTS
+(
+    student_id BIGINT NOT NULL,
+    course_id  BIGINT NOT NULL,
+    PRIMARY KEY (student_id, course_id),
+    CONSTRAINT fk_enrollments_student FOREIGN KEY (student_id) REFERENCES STUDENTS (id),
+    CONSTRAINT fk_enrollments_course FOREIGN KEY (course_id) REFERENCES COURSES (id)
+    );
