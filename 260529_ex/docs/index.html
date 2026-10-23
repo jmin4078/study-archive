@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>memo. - 당신의 일상을 담는 공간</title>
+  <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Noto+Serif+KR:wght@400;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #f5f0e8;
+      --paper: #fffdf7;
+      --ink: #1a1410;
+      --muted: #9a8f82;
+      --accent: #be3627;
+      --line: #e2ddd5;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; }
+
+    body {
+      font-family: 'Gowun Dodum', serif;
+      background: var(--bg);
+      color: var(--ink);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background-image:
+        radial-gradient(ellipse at 70% 10%, #f0e6cc55 0%, transparent 60%),
+        radial-gradient(ellipse at 10% 90%, #e8ddd055 0%, transparent 60%);
+    }
+
+    .container {
+      text-align: center;
+      animation: fadeIn .6s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .logo {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 3.5rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      letter-spacing: -.02em;
+    }
+    .logo span { color: var(--accent); }
+
+    h1 {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 2rem;
+      line-height: 1.6;
+      margin-bottom: 8px;
+      color: var(--ink);
+    }
+
+    p {
+      font-size: 1.05rem;
+      color: var(--muted);
+      margin-bottom: 28px;
+      line-height: 1.7;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 14px 36px;
+      background: var(--accent);
+      color: #fff;
+      text-decoration: none;
+      border: none;
+      border-radius: 10px;
+      font-family: 'Gowun Dodum', serif;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all .2s;
+      box-shadow: 0 4px 12px rgba(192,57,43,0.2);
+    }
+    .btn:hover {
+      background: #a93226;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(192,57,43,0.28);
+    }
+    .btn:active { transform: translateY(0); }
+
+    @media (max-width: 480px) {
+      .logo { font-size: 2.5rem; }
+      h1 { font-size: 1.5rem; }
+      p { font-size: 0.95rem; }
+      .btn { padding: 12px 28px; font-size: 0.95rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="logo">memo<span>.</span></div>
+  <h1>당신의 일상을 담다
+  <p>오늘의 생각부터 내일의 계획까지<br/>빠르고 깔끔하게 메모하세요</p>
+  <a href="memov2.html" class="btn">✏️ 메모 시작하기</a>
+</div>
+
+</body>
+</html>
