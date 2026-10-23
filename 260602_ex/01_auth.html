@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Supabase</title>
+  </head>
+  <body>
+    <!-- 회원가입 -->
+    <form id="join">
+      <h1>회원가입</h1>
+      <input type="email" name="auth-email" placeholder="123@gmail.com" />
+      <input
+        type="password"
+        name="auth-password"
+        placeholder="6자리 이상 비밀번호 입력"
+      />
+      <button type="submit">가입</button>
+    </form>
+    <!-- 로그인 -->
+    <form id="login">
+      <h1>로그인</h1>
+      <input type="email" name="auth-email" placeholder="123@gmail.com" />
+      <input
+        type="password"
+        name="auth-password"
+        placeholder="6자리 이상 비밀번호 입력"
+      />
+      <button type="submit">로그인</button>
+    </form>
+    <script>
+      // https://supabase.com/dashboard/project/본인프로젝트ID
+      const SUPABASE_URL = "https://uyiaanjwthjhissjukig.supabase.co";
+      const SUPABASE_PUB_KEY = "sb_publishable_oBPijEsRfhIbPDxvdcjISQ_aDj9cJBF";
+
+      // # 안빼먹기
+      const joinForm = document.querySelector("#join");
+      // submit 안 빼먹고 click이랑 안 헷갈리기
+      joinForm.addEventListener("submit", joinHandler);
+
+      const loginForm = document.querySelector("#login");
+      loginForm.addEventListener("submit", loginHandler);
+
+      async function joinHandler(event) {
+        event.preventDefault();
+        console.log("joinForm");
+        const formData = new FormData(event.target);
+        console.log(...formData);
+        const email = formData.get("auth-email");
+        const password = formData.get("auth-password");
+        try {
+          const result = await joinWithSupabase(email, password);
+          console.log(result);
+          console.log("가입 완료");
+        } catch (err) {
+          console.log(err);
+          console.log("가입 실패");
+        }
+      }
+
+      async function joinWithSupabase(email, password) {
+        // response -> res, resp
+        // request -> req
+        const res = await fetch(`${SUPABASE_URL}/auth/v1/signup`, {
+          method: "POST",
+          headers: {
+            apikey: SUPABASE_PUB_KEY,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, password }),
+        });
+        console.log(res.status);
+        console.log(res.ok);
+        const json = await res.json();
+        if (!res.ok) {
+          throw new Error(JSON.stringify(json));
+        }
+        return json;
+      }
+
+      async function loginHandler(event) {
+        event.preventDefault();
+        console.log("loginForm");
+        const formData = new FormData(event.target);
+        console.log(...formData);
+        const email = formData.get("auth-email");
+        const password = formData.get("auth-password");
+        try {
+          const result = await loginWithSupabase(email, password);
+          console.log(result);
+          console.log("로그인 완료");
+        } catch (err) {
+          console.log(err);
+          console.log("로그인 실패");
+        }
+      }
+
+      async function loginWithSupabase(email, password) {
+        const res = await fetch(
+          `${SUPABASE_URL}/auth/v1/token?grant_type=password`,
+          {
+            method: "POST",
+            headers: {
+              apikey: SUPABASE_PUB_KEY,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ email, password }),
+          },
+        );
+        console.log(res.status);
+        console.log(res.ok);
+        const json = await res.json();
+        if (!res.ok) {
+          throw new Error(JSON.stringify(json));
+        }
+        return json;
+      }
+    </script>
+  </body>
+</html>
