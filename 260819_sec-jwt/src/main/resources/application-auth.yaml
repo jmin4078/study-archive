@@ -1,0 +1,19 @@
+app:
+  auth:
+    # argon2, scrypt, bcrypt
+    encoding-id: argon2
+    jwt:
+      secret: ${JWT_SECRET}
+      accessExpiry: 15m
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+  security:
+    user:
+      name: user
+      password: test
+springdoc:
+  swagger-ui:
+    persist-authorization: true
